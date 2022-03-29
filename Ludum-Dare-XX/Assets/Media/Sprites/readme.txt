@@ -1,0 +1,1 @@
+Ort für die Sprites, die am besten zusammenhängend in Ordnern sortiert werden.
