@@ -11,16 +11,26 @@ public class MovingPlatform : MonoBehaviour
     private float speed;
 
     [SerializeField]
-    private float endPosX;
-    private Vector3 EndPos => new Vector3(endPosX,transform.position.y);
+    private Vector2 endPosRelativ;
+    private Vector3 EndPos => new Vector3(x: transform.position.x + endPosRelativ.x,y: transform.position.y + endPosRelativ.y);
     
     private void Start()
     {
-        transform.DOMove(EndPos, speed, false).SetEase(Ease.InOutSine).SetLoops(-1,LoopType.Yoyo);
+        transform.DOMove(endValue: EndPos, duration: speed).SetEase(Ease.InOutSine).SetSpeedBased().SetLoops(loops: -1,loopType: LoopType.Yoyo);
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        col.transform.SetParent(transform);
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        col.transform.SetParent(null);
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(EndPos,0.4f);
+        Gizmos.DrawSphere(center: EndPos,radius: 0.4f);
     }
 }
