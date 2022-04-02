@@ -34,6 +34,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Trap.OnTrapHit += KillPlayer;
+        Collectable.OnCollect += OnCollect;
+    }
+
+    private void OnCollect()
+    {
+        Debug.Log("you got one");
     }
 
     private void KillPlayer()
