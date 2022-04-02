@@ -42,13 +42,16 @@ public class BreakingPlatform : MonoBehaviour
     private void Break()
     {
         if (_isBreaking)
+        {
             return;
+        }
+
         _isBreaking = true;
         
-        var sq = DOTween.Sequence();
-        sq.Append(transform.DORotate(Vector3.forward * strength, speed, RotateMode.FastBeyond360));
-        sq.Append(transform.DORotate(Vector3.back * strength, speed, RotateMode.FastBeyond360));
-        sq.SetLoops(loopCount, LoopType.Yoyo);
+        Sequence sq = DOTween.Sequence();
+        sq.Append(transform.DORotate(endValue: Vector3.forward * strength, duration: speed, mode: RotateMode.FastBeyond360));
+        sq.Append(transform.DORotate(endValue: Vector3.back * strength, duration: speed, mode: RotateMode.FastBeyond360));
+        sq.SetLoops(loops: loopCount, loopType: LoopType.Yoyo);
         sq.OnComplete(DestroyMe);
     }
 
