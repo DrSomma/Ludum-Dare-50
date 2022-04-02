@@ -26,17 +26,18 @@ public class BreakingPlatform : MonoBehaviour
         Break();
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.G))
-            Break();
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            _isBreaking = false;
-            Debug.Log("Kill: " + transform.DOKill(true));
-            transform.rotation = Quaternion.identity;
-        }
-    }
+    //Just for debug!
+    // private void Update()
+    // {
+    //     if(Input.GetKeyDown(KeyCode.G))
+    //         Break();
+    //     if (Input.GetKeyDown(KeyCode.H))
+    //     {
+    //         _isBreaking = false;
+    //         Debug.Log("Kill: " + transform.DOKill(true));
+    //         transform.rotation = Quaternion.identity;
+    //     }
+    // }
 
     private void Break()
     {
