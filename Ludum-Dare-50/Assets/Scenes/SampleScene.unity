@@ -1650,7 +1650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aaf8fe6804cd9340ab438afa36312e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fist: {fileID: 4572553734875067581, guid: c3442e8daa4aac34a94c454e068e8686, type: 3}
+  fist: {fileID: 8984515945663936490, guid: 0ba5b90565b90af4fbade602302053ec, type: 3}
   fistSpeed: 0.2
   shakeSpeed: 1
 --- !u!61 &1635017113
