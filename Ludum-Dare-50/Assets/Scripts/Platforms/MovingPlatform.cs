@@ -15,7 +15,7 @@ namespace Platforms
     
         private void Start()
         {
-            _endPos = new Vector3(x: transform.position.x + endPosRelativ.x,y: transform.position.y + endPosRelativ.y)
+            _endPos = new Vector3(x: transform.position.x + endPosRelativ.x, y: transform.position.y + endPosRelativ.y);
             transform.DOMove(endValue: _endPos, duration: speed).SetEase(Ease.InOutSine).SetSpeedBased().SetLoops(loops: -1,loopType: LoopType.Yoyo);
         }
 
