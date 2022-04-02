@@ -19,14 +19,16 @@ public class Endpoint : MonoBehaviour
 
     private async void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.CompareTag("Player"))
+        if (!col.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Exit!");
-            PlayerMovement playerMovement = col.GetComponent<PlayerMovement>();
-            playerMovement.OnFoundExit();
-            await SpawnFist(col.transform);
-            OnLevelComplete?.Invoke();
+            return;
         }
+
+        Debug.Log("Exit!");
+        PlayerMovement playerMovement = col.GetComponent<PlayerMovement>();
+        playerMovement.OnFoundExit();
+        await SpawnFist(col.transform);
+        OnLevelComplete?.Invoke();
     }
 
     private async Task SpawnFist(Transform playerTransform)

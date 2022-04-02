@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,9 +29,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #endregion 
-    
-    
-    
-    
+    #endregion
+
+    private void Start()
+    {
+        Trap.OnTrapHit += KillPlayer;
+    }
+
+    private void KillPlayer()
+    {
+        LevelManager.Instance.ReloadCurrentScene();
+    }
 }

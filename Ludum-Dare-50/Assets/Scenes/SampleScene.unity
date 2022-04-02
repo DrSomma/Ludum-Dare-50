@@ -1038,8 +1038,9 @@ GameObject:
   - component: {fileID: 1237274490}
   - component: {fileID: 1237274489}
   - component: {fileID: 1237274491}
+  - component: {fileID: 1237274492}
   m_Layer: 0
-  m_Name: Isometric Diamond
+  m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1134,8 +1135,20 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 0.9, y: 0.45}
   m_EdgeRadius: 0
+--- !u!114 &1237274492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1237274488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a056bdd909a2141a1cac5730c90b03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1349359106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1217,7 +1230,7 @@ GameObject:
   - component: {fileID: 1375756652}
   - component: {fileID: 1375756654}
   m_Layer: 0
-  m_Name: Hexagon Flat-Top
+  m_Name: Collectable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
