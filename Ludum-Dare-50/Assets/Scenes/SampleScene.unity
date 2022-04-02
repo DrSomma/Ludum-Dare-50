@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  endPosRelativ: {x: 0, y: 0}
+  endPosRelativ: {x: 0, y: -2.33}
 --- !u!1001 &616422561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2023,7 +2023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  endPosRelativ: {x: 0, y: 0}
+  endPosRelativ: {x: 5.25, y: 0}
 --- !u!1001 &2321588536362626806
 PrefabInstance:
   m_ObjectHideFlags: 0
