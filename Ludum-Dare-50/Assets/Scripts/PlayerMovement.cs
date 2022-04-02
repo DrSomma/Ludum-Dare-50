@@ -72,4 +72,10 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(center: groudCheck.position, radius: checkRadius);
     }
+
+    public void OnFoundExit()
+    {
+        _rb.bodyType = RigidbodyType2D.Static; //stop moving
+        this.enabled = false;
+    }
 }
