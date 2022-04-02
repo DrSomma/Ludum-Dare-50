@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
@@ -10,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     private float jumpForce = 12f;
 
     [SerializeField]
+    private float jumpBuffer = 0.1f;
+    
+    [SerializeField]
     private Transform groudCheck;
 
     [SerializeField]
@@ -19,7 +23,11 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask whatIsGround;
 
     private bool _isGrounded;
-    private bool _jumpBuffer;
+    
+    private float _lastJumpPressed;
+    private bool HasBufferedJump => (_lastJumpPressed + jumpBuffer) > Time.time;
+    private bool _doJumpe;
+
     private float _moveInput;
     
     private Rigidbody2D _rb;
@@ -32,18 +40,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || _jumpBuffer)
+        if (Input.GetButtonDown("Jump")){
+            _lastJumpPressed = Time.time;
+            _doJumpe = true;
+        }
+        
+        if (_isGrounded && (_doJumpe || HasBufferedJump))
         {
-            if (_isGrounded)
-            {
-                _rb.velocity = Vector2.up * jumpForce;
-                _isGrounded = false;
-                _jumpBuffer = false;
-            }
-            else
-            {
-                _jumpBuffer = true;
-            }
+            _rb.velocity = Vector2.up * jumpForce;
+            _isGrounded = false;
         }
     }
 
