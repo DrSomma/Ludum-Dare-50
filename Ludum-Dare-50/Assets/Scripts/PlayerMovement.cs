@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private float jumpBuffer = 0.1f;
 
     [SerializeField]
-    private float maxFallSpeed = 25f;
+    private float maxFallSpeed = -25f;
 
     [SerializeField]
     private Transform groudCheck;
@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _isGrounded = Physics2D.OverlapCircleNonAlloc(point: groudCheck.position, radius: checkRadius, results: _overlapResults, layerMask: whatIsGround) > 0;
         _moveInput = Input.GetAxisRaw("Horizontal");
-        _rb.velocity = new Vector2(x: _moveInput * speed, y: Mathf.Clamp(value: _rb.velocity.y, min: 0, max: maxFallSpeed));
+        _rb.velocity = new Vector2(x: _moveInput * speed, y: Mathf.Max(a: maxFallSpeed, b: _rb.velocity.y));
     }
 
     private void OnDrawGizmos()

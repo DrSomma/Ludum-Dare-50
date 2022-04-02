@@ -903,6 +903,7 @@ MonoBehaviour:
   speed: 5
   jumpForce: 12
   jumpBuffer: 0.1
+  maxFallSpeed: -25
   groudCheck: {fileID: 967815546}
   checkRadius: 0.2
   whatIsGround:
