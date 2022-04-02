@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
@@ -12,7 +11,10 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     private float jumpBuffer = 0.1f;
-    
+
+    [SerializeField]
+    private float maxFallSpeed = 25f;
+
     [SerializeField]
     private Transform groudCheck;
 
@@ -23,13 +25,13 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask whatIsGround;
 
     private bool _isGrounded;
-    
+
     private float _lastJumpPressed;
-    private bool HasBufferedJump => (_lastJumpPressed + jumpBuffer) > Time.time;
+    private bool HasBufferedJump => _lastJumpPressed + jumpBuffer > Time.time;
     private bool _doJumpe;
 
     private float _moveInput;
-    
+
     private Rigidbody2D _rb;
     private readonly Collider2D[] _overlapResults = new Collider2D[2]; //can only detect 2 collisions
 
@@ -40,11 +42,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Jump")){
+        if (Input.GetButtonDown("Jump"))
+        {
             _lastJumpPressed = Time.time;
             _doJumpe = true;
         }
-        
+        else
+        {
+            _doJumpe = false;
+        }
+
         if (_isGrounded && (_doJumpe || HasBufferedJump))
         {
             _rb.velocity = Vector2.up * jumpForce;
@@ -56,12 +63,13 @@ public class PlayerMovement : MonoBehaviour
     {
         _isGrounded = Physics2D.OverlapCircleNonAlloc(point: groudCheck.position, radius: checkRadius, results: _overlapResults, layerMask: whatIsGround) > 0;
         _moveInput = Input.GetAxisRaw("Horizontal");
-        _rb.velocity = new Vector2(x: _moveInput * speed, y: _rb.velocity.y);
+        _rb.velocity = new Vector2(x: _moveInput * speed, y: Mathf.Clamp(value: _rb.velocity.y, min: 0, max: maxFallSpeed));
     }
-    
-    private void OnDrawGizmos() {
+
+    private void OnDrawGizmos()
+    {
         // Bounds
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(groudCheck.position, checkRadius);
+        Gizmos.DrawWireSphere(center: groudCheck.position, radius: checkRadius);
     }
 }
