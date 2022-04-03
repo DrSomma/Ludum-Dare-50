@@ -6,7 +6,7 @@ namespace Traps
     public class Trap : MonoBehaviour
     {
         [SerializeField]
-        private GameObject particleSystem;
+        private GameObject playerDeathParticleSystem;
         
         protected void OnCollisionEnter2D(Collision2D col)
         {
@@ -26,7 +26,7 @@ namespace Traps
 
         protected virtual void ThisTrapOnHit(Vector2 pos)
         {
-            var ps = Instantiate(particleSystem);
+            var ps = Instantiate(playerDeathParticleSystem);
             ps.transform.position = pos;
 
         }
