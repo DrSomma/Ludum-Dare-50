@@ -5,19 +5,20 @@ namespace Traps
 {
     public class Trap : MonoBehaviour
     {
-        public static event Action OnTrapHit;
-    
         protected void OnCollisionEnter2D(Collision2D col)
         {
-            Debug.Log("lol");
             if (!col.gameObject.CompareTag("Player"))
             {
                 return;
             }
 
+            KillPlayer();
             ThisTrapOnHit();
-            
-            OnTrapHit?.Invoke();
+        }
+
+        private void KillPlayer()
+        {
+            GameManager.Instance.UpdateGameState(GameState.Dead);
         }
 
         protected virtual void ThisTrapOnHit()

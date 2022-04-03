@@ -19,18 +19,17 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Do not add 2 {this.GetType()}");
+            Debug.Log($"Do not add 2 {GetType()}");
         }
         #endregion
     }
 
     private void Start()
     {
-        Endpoint.OnLevelComplete += LoadNextLevel;
         CurLevel = SceneManager.GetActiveScene().buildIndex;
     }
 
-    private void LoadNextLevel()
+    public void LoadNextLevel()
     {
         CurLevel++;
         LoadLevel(CurLevel);
@@ -45,9 +44,9 @@ public class LevelManager : MonoBehaviour
     {
         //Todo: level transition
 
-        DOTween.KillAll(false);
+        // DOTween.KillAll(false);
         
-        var cntScenes = SceneManager.sceneCountInBuildSettings;
+        int cntScenes = SceneManager.sceneCountInBuildSettings;
         Debug.Log($"Load level: {curLevel}/{cntScenes}");
         if (curLevel > cntScenes)
         {
@@ -55,5 +54,6 @@ public class LevelManager : MonoBehaviour
         }
 
         SceneManager.LoadScene(curLevel);
+        GameManager.Instance.UpdateGameState(GameState.Playing);
     }
 }
