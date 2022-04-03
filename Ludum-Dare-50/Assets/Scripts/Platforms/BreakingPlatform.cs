@@ -56,7 +56,13 @@ namespace Platforms
 
         private void DestroyMe()
         {
-            Destroy(gameObject);
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            Vector3 position = transform.position;
+            Vector3 endPos = new Vector3(x: position.x, y: position.y - 5);
+            transform.DOMove(endValue: endPos, duration: 0.3f).SetEase(Ease.InExpo);
+            sprite.DOFade(endValue: 0, duration: 0.3f);
+            
+            Destroy(obj: gameObject,t: 2f);
         }
     }
 }
