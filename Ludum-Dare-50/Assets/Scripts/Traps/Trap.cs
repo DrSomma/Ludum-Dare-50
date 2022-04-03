@@ -9,6 +9,7 @@ namespace Traps
     
         protected void OnCollisionEnter2D(Collision2D col)
         {
+            Debug.Log("lol");
             if (!col.gameObject.CompareTag("Player"))
             {
                 return;

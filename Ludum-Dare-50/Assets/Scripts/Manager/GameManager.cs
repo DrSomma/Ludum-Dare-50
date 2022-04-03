@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void KillPlayer()
     {
+        Debug.Log("KillPlayer");
         LevelManager.Instance.ReloadCurrentScene();
     }
 }

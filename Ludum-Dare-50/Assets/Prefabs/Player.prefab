@@ -143,7 +143,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5441765227876339914, guid: 25133fab547b9d548879c3904a4bac41, type: 3}
       propertyPath: m_Name
-      value: Character Variant
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5441765227876339914, guid: 25133fab547b9d548879c3904a4bac41, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5888574748552188421, guid: 25133fab547b9d548879c3904a4bac41, type: 3}
       propertyPath: m_Bounds.m_Center.x

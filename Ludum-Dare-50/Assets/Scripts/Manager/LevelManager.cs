@@ -44,7 +44,8 @@ public class LevelManager : MonoBehaviour
     {
         //Todo: level transition
         
-        var cntScenes = SceneManager.sceneCount;
+        var cntScenes = SceneManager.sceneCountInBuildSettings;
+        Debug.Log($"Load level: {curLevel}/{cntScenes}");
         if (curLevel > cntScenes)
         {
             return;
