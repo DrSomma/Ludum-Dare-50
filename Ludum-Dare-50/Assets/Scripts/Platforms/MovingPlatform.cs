@@ -11,12 +11,10 @@ namespace Platforms
         [SerializeField]
         private Vector2 endPosRelativ;
 
-        private Vector3 _endPos;
-    
         private void Start()
         {
-            _endPos = new Vector3(x: transform.position.x + endPosRelativ.x, y: transform.position.y + endPosRelativ.y);
-            transform.DOMove(endValue: _endPos, duration: speed).SetEase(Ease.InOutSine).SetSpeedBased().SetLoops(loops: -1,loopType: LoopType.Yoyo);
+            Vector3 endPos = new Vector3(x: transform.position.x + endPosRelativ.x, y: transform.position.y + endPosRelativ.y);
+            transform.DOMove(endValue: endPos, duration: speed).SetEase(Ease.InOutSine).SetSpeedBased().SetLoops(loops: -1,loopType: LoopType.Yoyo);
         }
 
         private void OnCollisionEnter2D(Collision2D col)
@@ -31,7 +29,9 @@ namespace Platforms
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawSphere(center: _endPos,radius: 0.4f);
+            Vector3 position = transform.position;
+            Vector3 endPos = new Vector3(x: position.x + endPosRelativ.x, y: position.y + endPosRelativ.y);
+            Gizmos.DrawSphere(center: endPos,radius: 0.4f);
         }
     }
 }
