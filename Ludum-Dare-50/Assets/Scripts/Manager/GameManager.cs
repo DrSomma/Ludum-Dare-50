@@ -7,34 +7,16 @@ using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    #region SINGLETON PATTERN
-
-    private static GameManager _instance;
-    public static GameManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GameManager>();
-
-                if (_instance == null)
-                {
-                    GameObject container = new GameObject(name: "GameManager");
-                    _instance = container.AddComponent<GameManager>();
-                }
-            }
-
-            return _instance;
-        }
-    }
-
-    #endregion
+    public static GameManager Instance;
 
     public GameState CurrentState { get; private set; }
     public static event Action<GameState> OnGameStateChange;
-    
-    
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         Collectable.OnCollect += OnCollect;

@@ -8,6 +8,11 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
+    private static int _cntScenes;
+
+    [SerializeField]
+    private NextLevelTransition nextLevelTransition;
+    
     public int CurLevel { get; private set; }
 
     private void Awake()
@@ -16,6 +21,7 @@ public class LevelManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            _cntScenes = SceneManager.sceneCountInBuildSettings;
         }
         else
         {
@@ -23,7 +29,7 @@ public class LevelManager : MonoBehaviour
         }
         #endregion
     }
-
+    
     private void Start()
     {
         CurLevel = SceneManager.GetActiveScene().buildIndex;
@@ -42,18 +48,19 @@ public class LevelManager : MonoBehaviour
 
     private void LoadLevel(int curLevel)
     {
-        //Todo: level transition
-
-        // DOTween.KillAll(false);
-        
-        int cntScenes = SceneManager.sceneCountInBuildSettings;
-        Debug.Log($"Load level: {curLevel}/{cntScenes}");
-        if (curLevel > cntScenes)
+        Debug.Log($"Load level: {curLevel}/{_cntScenes}");
+        if (curLevel > _cntScenes)
         {
             return;
         }
+        
+        nextLevelTransition.DoTransition(NextLevelTransition.TransitionFace.Close);
+        nextLevelTransition.OnTransitionComplete += () =>
+        {
+            DOTween.KillAll(false);
+            SceneManager.LoadScene(curLevel);
+        };
 
-        SceneManager.LoadScene(curLevel);
         GameManager.Instance.UpdateGameState(GameState.Playing);
     }
 }
