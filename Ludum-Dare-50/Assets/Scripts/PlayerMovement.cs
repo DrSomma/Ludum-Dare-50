@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _doJump = false;
         _lastJumpPressed = float.MinValue;
-        _playerMovementAnimator = GetComponent<Animator>();
+        _playerMovementAnimator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
