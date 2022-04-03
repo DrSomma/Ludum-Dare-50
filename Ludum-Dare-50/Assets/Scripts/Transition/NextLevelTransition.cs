@@ -22,8 +22,7 @@ public class NextLevelTransition : MonoBehaviour
         Close,
         Open
     }
-
-    public event Action OnTransitionComplete;
+    public bool IsRunning => _face == TransitionFace.Running;
     
     private TransitionFace _face;
     private float _startPosRight;
@@ -33,12 +32,12 @@ public class NextLevelTransition : MonoBehaviour
     {
         _startPosRight = right.localPosition.x;
         _startPosLeft = left.localPosition.x;
-        DoTransition(TransitionFace.Open);
+        _face = TransitionFace.Idle; 
     }
 
     public void DoTransition(TransitionFace doTransition)
     {
-        if(_face == TransitionFace.Running)
+        if(IsRunning)
         {
             return;
         }
@@ -89,7 +88,6 @@ public class NextLevelTransition : MonoBehaviour
     private void Completed(TransitionFace transitionFace)
     {
         _face = TransitionFace.Idle;
-        OnTransitionComplete?.Invoke();
     }
 }
 

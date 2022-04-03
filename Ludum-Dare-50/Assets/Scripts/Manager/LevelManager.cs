@@ -23,11 +23,11 @@ public class LevelManager : MonoBehaviour
             Instance = this;
             _cntScenes = SceneManager.sceneCountInBuildSettings;
         }
-        else
+        else if(Instance != this)
         {
             Debug.Log($"Do not add 2 {GetType()}");
         }
-        #endregion
+        #endregion  
     }
     
     private void Start()
@@ -53,14 +53,23 @@ public class LevelManager : MonoBehaviour
         {
             return;
         }
-        
-        nextLevelTransition.DoTransition(NextLevelTransition.TransitionFace.Close);
-        nextLevelTransition.OnTransitionComplete += () =>
-        {
-            DOTween.KillAll(false);
-            SceneManager.LoadScene(curLevel);
-        };
 
+        StartCoroutine(StartLevelLoad(curLevel));
+    }
+
+    IEnumerator StartLevelLoad(int curLevel)
+    {
+        nextLevelTransition.DoTransition(NextLevelTransition.TransitionFace.Close);
+        yield return new WaitWhile(() => nextLevelTransition.IsRunning);
+        OnTransitionComplete(curLevel);
+        yield return null;
+    }
+
+    private void OnTransitionComplete(int curLevel)
+    {
+        DOTween.KillAll(false);
+        SceneManager.LoadScene(curLevel);
+        nextLevelTransition.DoTransition(NextLevelTransition.TransitionFace.Open);
         GameManager.Instance.UpdateGameState(GameState.Playing);
     }
 }

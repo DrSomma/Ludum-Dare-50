@@ -664,7 +664,7 @@ MonoBehaviour:
   SoundData:
   - Name: Theme
     AudioClip: {fileID: 8300000, guid: 15bf99c5dbcb6224684b012aa3ba6156, type: 3}
-    Volume: 0.4
+    Volume: 0.1
     Pitch: 1
     IsLoop: 1
     HasCooldown: 0

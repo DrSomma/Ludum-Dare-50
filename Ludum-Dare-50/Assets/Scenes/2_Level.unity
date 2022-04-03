@@ -747,7 +747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299873805}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.78, y: -2.83, z: -10}
+  m_LocalPosition: {x: -0.78, y: -1.84, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -864,6 +864,10 @@ PrefabInstance:
     - target: {fileID: 637634612157510683, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
       propertyPath: m_Name
       value: Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[0].Volume
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 807084c9217152147a34eb5d08f465a4, type: 3}

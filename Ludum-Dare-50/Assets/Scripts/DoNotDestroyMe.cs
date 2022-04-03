@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class DoNotDestroyMe : MonoBehaviour
 {
-    private static bool _isInSceen;
-    
-    void Start()
+    private static DoNotDestroyMe _me;
+
+    private void Awake()
     {
-        if(_isInSceen)
+        if (_me == null)
+        {
+            Init();
+        }
+
+        if(_me != this)
+        {
             Destroy(gameObject);
-        _isInSceen = true;
-        
+        }
+    }
+
+    private void Init()
+    {
+        _me = this;
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(true);
