@@ -54,25 +54,31 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            _lastJumpPressed = Time.time;
-            _doJump = true;
-        }
-        else
-        {
-            _doJump = false;
-        }
+        DoJump(Input.GetButtonDown("Jump"));
 
-        if (Input.GetButtonDown("Horizontal"))
-        {
-            SetFacingDirection();
-        }
+        float horizontalAxis = Input.GetAxisRaw("Horizontal");
+
+        SetFacingDirectionAnimation(horizontalAxis);
+        SetIsRunningAnimation(horizontalAxis);
 
         if (_isGrounded && (_doJump || HasBufferedJump))
         {
             _rb.velocity = Vector2.up * JumpForce;
             _isGrounded = false;
+        }
+    }
+
+    private void DoJump(bool jumpButtonPressed)
+    {
+        if (jumpButtonPressed)
+        {
+            _lastJumpPressed = Time.time;
+            _doJump = true;
+            _playerMovementAnimator.SetTrigger("JumpTriggered");
+        }
+        else
+        {
+            _doJump = false;
         }
     }
 
@@ -90,10 +96,23 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireSphere(center: GroundCheck.position, radius: CheckRadius);
     }
 
-    private void SetFacingDirection()
+    private void SetFacingDirectionAnimation(float horizontalAxis)
     {
-        bool isFacingRight = Input.GetAxisRaw("Horizontal") > 0;
+        bool oldIsFacingRight = _playerMovementAnimator.GetBool("IsFacingRight");
+        if (!oldIsFacingRight && horizontalAxis == 0)
+        {
+            return;
+        }
+        
+        bool isFacingRight = horizontalAxis >= 0;
         _playerMovementAnimator.SetBool(name: "IsFacingRight", value: isFacingRight);
+    }
+
+    private void SetIsRunningAnimation(float horizontalAxis)
+    {
+        bool isHorizontalButtonPressed = horizontalAxis != 0f;
+        bool isRunning = isHorizontalButtonPressed || _rb.velocity.x != 0f;
+        _playerMovementAnimator.SetBool(name: "IsRunning", value: isRunning);
     }
 
     public void OnFoundExit()

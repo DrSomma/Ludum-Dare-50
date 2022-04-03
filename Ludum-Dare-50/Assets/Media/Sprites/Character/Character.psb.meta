@@ -3550,14 +3550,14 @@ ScriptedImporter:
     internalID: 0
     spriteBone:
     - name: Left Lower Leg Bone
-      position: {x: 11.762811, y: -0.000044504402, z: 0}
+      position: {x: 11.762838, y: -0.000057498648, z: 0}
       rotation: {x: 0, y: 0, z: -0.13462134, w: 0.9908972}
       length: 11.116013
       parentId: 1
     - name: Left Upper Leg Bone
       position: {x: 8.064087, y: 22.85147, z: 0}
       rotation: {x: 0, y: 0, z: -0.53581923, w: 0.8443328}
-      length: 11.762783
+      length: 11.762789
       parentId: -1
     spriteOutline: []
     vertices:
@@ -3855,14 +3855,14 @@ ScriptedImporter:
     internalID: 0
     spriteBone:
     - name: Right Lower Leg Bone
-      position: {x: 14.470871, y: -0.000009581218, z: 0}
-      rotation: {x: 0, y: 0, z: 0.24656363, w: 0.96912664}
-      length: 10.499483
+      position: {x: 14.588692, y: 0.00000023871053, z: 0}
+      rotation: {x: 0, y: 0, z: -0.042582437, w: 0.999093}
+      length: 10.9504595
       parentId: 1
     - name: Right Upper Leg Bone
-      position: {x: 33.509598, y: 22.85147, z: 0}
-      rotation: {x: 0, y: 0, z: 0.9020336, w: -0.43166572}
-      length: 14.470851
+      position: {x: 33.812134, y: 24.061646, z: 0}
+      rotation: {x: 0, y: 0, z: 0.84835035, w: -0.5294353}
+      length: 14.588608
       parentId: -1
     spriteOutline: []
     vertices:
@@ -4969,22 +4969,22 @@ ScriptedImporter:
       length: 112.06634
       parentId: 0
     - name: Right Upper Leg Bone
-      position: {x: 21.599361, y: 40.3814, z: 0}
-      rotation: {x: 0, y: -0, z: 0.9430679, w: 0.33260036}
-      length: 14.470845
+      position: {x: 22.809526, y: 40.078865, z: 0}
+      rotation: {x: 0, y: -0, z: 0.9742416, w: 0.22550704}
+      length: 14.588602
       parentId: 0
     - name: Right Lower Leg Bone
-      position: {x: 14.470847, y: -0.0000030768656, z: 0}
-      rotation: {x: 0, y: 0, z: 0.24656364, w: 0.96912664}
-      length: 10.499482
+      position: {x: 14.588602, y: -0.0000068422396, z: 0}
+      rotation: {x: 0, y: 0, z: -0.04258243, w: 0.999093}
+      length: 10.950455
       parentId: 2
     - name: Left Upper Leg Bone
       position: {x: 21.599352, y: -28.173079, z: 0}
       rotation: {x: 0, y: -0, z: -0.97591484, w: 0.21815203}
-      length: 11.762782
+      length: 11.762787
       parentId: 0
     - name: Left Lower Leg Bone
-      position: {x: 11.762786, y: 0.0000046908162, z: 0}
+      position: {x: 11.762792, y: 0.0000018483242, z: 0}
       rotation: {x: 0, y: 0, z: -0.13462134, w: 0.9908972}
       length: 11.116011
       parentId: 4
