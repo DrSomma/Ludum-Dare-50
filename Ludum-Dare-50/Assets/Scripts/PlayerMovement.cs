@@ -40,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _doJumpe = false;
+        _lastJumpPressed = float.MinValue;
     }
 
     private void Update()
