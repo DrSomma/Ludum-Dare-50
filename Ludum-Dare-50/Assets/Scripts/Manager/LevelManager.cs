@@ -69,7 +69,10 @@ public class LevelManager : MonoBehaviour
     {
         DOTween.KillAll(false);
         SceneManager.LoadScene(curLevel);
-        nextLevelTransition.DoTransition(NextLevelTransition.TransitionFace.Open);
-        GameManager.Instance.UpdateGameState(GameState.Playing);
+        nextLevelTransition.DoTransition(NextLevelTransition.TransitionFace.Open,
+            () =>
+            {
+                GameManager.Instance.UpdateGameState(GameState.Playing);
+            });
     }
 }

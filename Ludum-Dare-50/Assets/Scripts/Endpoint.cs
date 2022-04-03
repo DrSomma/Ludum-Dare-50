@@ -14,7 +14,27 @@ public class Endpoint : MonoBehaviour
     private float fistSpeed = 0.25f;
     [SerializeField]
     private float shakeSpeed = 1f;
-    
+
+    private Action<GameState> _onEndpointReached;
+
+    private GameObject _player;
+
+    private void Start()
+    {
+        _onEndpointReached = (GameState state) =>
+        {
+            if(state != GameState.OnEndpoint)
+                return;
+            StartCoroutine(StartEndAnimation(_player));
+        };
+        GameManager.Instance.OnGameStateChange += _onEndpointReached;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnGameStateChange -= _onEndpointReached;
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!col.gameObject.CompareTag("Player"))
@@ -23,10 +43,20 @@ public class Endpoint : MonoBehaviour
         }
 
         Debug.Log("Exit!");
-        PlayerMovement playerMovement = col.GetComponent<PlayerMovement>();
-        playerMovement.OnFoundExit();
-        SpawnFist(col.transform, AnimationIsDone);
+        _player = col.gameObject;
         
+        GameManager.Instance.UpdateGameState(GameState.OnEndpoint);
+    }
+
+    private IEnumerator StartEndAnimation(GameObject player)
+    {
+        PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement.OnFoundExit();
+        Debug.Log("WaitUntil OnGround!");
+        yield return new WaitUntil(() => playerMovement.OnGround);
+        Debug.Log("WaitUntil now OnGround!");
+        SpawnFist(playerTransform: player.transform, onComplete: AnimationIsDone);
+        yield return null;
     }
 
     private void AnimationIsDone()

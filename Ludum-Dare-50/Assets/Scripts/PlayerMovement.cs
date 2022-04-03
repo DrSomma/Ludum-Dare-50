@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
 
     private readonly Collider2D[] _overlapResults = new Collider2D[2]; //can only detect 2 collisions
 
+    public bool OnGround => _isGrounded;
+    
     private bool _doJump;
 
     private bool _isGrounded;
@@ -66,24 +68,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        _canMove = GameManager.Instance.CurrentState == GameState.Playing;
         _myOnGameStateChangeEvent = OnGameStateChange;
         GameManager.Instance.OnGameStateChange += _myOnGameStateChangeEvent;
     }
 
     private void OnGameStateChange(GameState state)
     {
-        if (state != GameState.Dead)
+        switch (state)
         {
-            return;
+            case GameState.Playing:
+                Debug.Log("sdadlalnlda");
+                _canMove = true;
+                break;
+            case GameState.Dead:
+                OnGameStateDeath();
+                break;
         }
+    }
 
-        StopMovement();
+    private void OnGameStateDeath()
+    {
+        StopMovement(true);
         
         DeathAnimation();
         
-        //remove my event! fix with reload scenes
-        GameManager.Instance.OnGameStateChange -= _myOnGameStateChangeEvent;
         GameManager.Instance.UpdateGameState(GameState.Reload);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnGameStateChange -= _myOnGameStateChangeEvent;
     }
 
     private void DeathAnimation()
@@ -130,6 +145,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _lastJumpPressed = Time.time;
             _doJump = true;
+            transform.DOScale(new Vector3(0.5f,1,1), 0.1f).SetEase(Ease.InOutBounce).SetLoops(2,LoopType.Yoyo);
         }
         else
         {
@@ -139,13 +155,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        _isGrounded = IsGrounded();
+        
         if (!_canMove)
         {
             return;
         }
-        _isGrounded = Physics2D.OverlapCircleNonAlloc(point: GroundCheck.position, radius: CheckRadius, results: _overlapResults, layerMask: WhatIsGround) > 0;
         _moveInput = Input.GetAxisRaw("Horizontal");
         MyRigidbody2D.velocity = new Vector2(x: _moveInput * Speed, y: Mathf.Max(a: MaxFallSpeed, b: MyRigidbody2D.velocity.y));
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics2D.OverlapCircleNonAlloc(point: GroundCheck.position, radius: CheckRadius, results: _overlapResults, layerMask: WhatIsGround) > 0;
     }
 
     private void OnDrawGizmos()
@@ -175,19 +197,22 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnFoundExit()
     {
-        StopMovement();
-        enabled = false;
+        StopMovement(false);
     }
 
-    private void StopMovement()
+    private void StopMovement(bool stopPhysics)
     {
         _canMove = false;
         if(MyRigidbody2D != null)
         {
-            MyRigidbody2D.bodyType = RigidbodyType2D.Static;
-            // MyRigidbody2D.simulated = false;
-            // MyRigidbody2D.velocity = Vector3.zero;
-            // MyRigidbody2D.gravityScale = 0f;
+            if (stopPhysics)
+            {
+                MyRigidbody2D.bodyType = RigidbodyType2D.Static;
+            }
+            else
+            {
+                MyRigidbody2D.velocity = Vector3.zero;
+            }
         }
     }
 }

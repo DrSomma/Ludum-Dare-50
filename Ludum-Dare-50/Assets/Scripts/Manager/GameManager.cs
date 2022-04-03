@@ -25,12 +25,16 @@ public class GameManager : MonoBehaviour
     public void UpdateGameState(GameState newState)
     {
         if(CurrentState == newState)
+        {
             return;
-        
+        }
+
         CurrentState = newState;
         switch (CurrentState)
         {
             case GameState.Playing:
+                break;
+            case GameState.OnEndpoint:
                 break;
             case GameState.LevelComplete:
                 LevelManager.Instance.LoadNextLevel();
@@ -40,11 +44,9 @@ public class GameManager : MonoBehaviour
             case GameState.Reload:
                 Reload();
                 break;
-            
             default: throw new ArgumentOutOfRangeException();
         }
 
-        var test = OnGameStateChange?.GetInvocationList();
         OnGameStateChange?.Invoke(CurrentState);
     }
 
@@ -65,5 +67,6 @@ public enum GameState
     Playing,
     LevelComplete,
     Dead,
-    Reload
+    Reload,
+    OnEndpoint
 }

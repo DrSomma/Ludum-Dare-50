@@ -14,7 +14,10 @@ public class NextLevelTransition : MonoBehaviour
     
     [SerializeField]
     private float duration = 0.3f;
-
+    
+    [SerializeField]
+    private float durationOpen = 0.1f;
+    
     public enum TransitionFace
     {
         Idle,
@@ -35,7 +38,7 @@ public class NextLevelTransition : MonoBehaviour
         _face = TransitionFace.Idle; 
     }
 
-    public void DoTransition(TransitionFace doTransition)
+    public void DoTransition(TransitionFace doTransition, TweenCallback onComplete = null)
     {
         if(IsRunning)
         {
@@ -48,10 +51,10 @@ public class NextLevelTransition : MonoBehaviour
             case TransitionFace.Idle: break;
             case TransitionFace.Running: break;
             case TransitionFace.Open:
-                FaceOpen();
+                FaceOpen(onComplete);
                 break;
             case TransitionFace.Close: 
-                FaceClose();
+                FaceClose(onComplete);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
@@ -63,30 +66,31 @@ public class NextLevelTransition : MonoBehaviour
         left.gameObject.SetActive(status);
     }
     
-    private void FaceClose()
+    private void FaceClose(TweenCallback onComplete = null)
     {
         SetElementsActive(true);
         Sequence sq = DOTween.Sequence();
         sq.Append(right.DOLocalMoveX(endValue: 0, duration: duration).From(_startPosRight).SetEase(Ease.OutSine));
         sq.Join(left.DOLocalMoveX(endValue: 0, duration: duration).From(_startPosLeft).SetEase(Ease.OutSine));
-        sq.OnComplete(() => Completed(TransitionFace.Close));
+        sq.OnComplete(() => Completed(TransitionFace.Close,onComplete));
     }
     
-    private void FaceOpen()
+    private void FaceOpen(TweenCallback onComplete = null)
     {
         SetElementsActive(true);
         Sequence sq = DOTween.Sequence();
-        sq.Append(right.DOLocalMoveX(endValue: _startPosRight, duration: duration).From(0).SetEase(Ease.OutSine));
-        sq.Join(left.DOLocalMoveX(endValue: _startPosLeft, duration: duration).From(0).SetEase(Ease.OutSine));
+        sq.Append(right.DOLocalMoveX(endValue: _startPosRight, duration: durationOpen).From(0).SetEase(Ease.InSine));
+        sq.Join(left.DOLocalMoveX(endValue: _startPosLeft, duration: durationOpen).From(0).SetEase(Ease.InSine));
         sq.OnComplete(() =>
         {
+            Completed(TransitionFace.Open, onComplete);
             SetElementsActive(false);
-            Completed(TransitionFace.Open);
         });
     }
 
-    private void Completed(TransitionFace transitionFace)
+    private void Completed(TransitionFace transitionFace, TweenCallback onComplete = null)
     {
+        onComplete?.Invoke();
         _face = TransitionFace.Idle;
     }
 }
