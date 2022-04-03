@@ -74,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
         {
             _lastJumpPressed = Time.time;
             _doJump = true;
-            _playerMovementAnimator.SetTrigger("JumpTriggered");
         }
         else
         {
@@ -111,8 +110,7 @@ public class PlayerMovement : MonoBehaviour
     private void SetIsRunningAnimation(float horizontalAxis)
     {
         bool isHorizontalButtonPressed = horizontalAxis != 0f;
-        bool isRunning = isHorizontalButtonPressed || _rb.velocity.x != 0f;
-        _playerMovementAnimator.SetBool(name: "IsRunning", value: isRunning);
+        _playerMovementAnimator.SetBool(name: "IsRunning", value: isHorizontalButtonPressed);
     }
 
     public void OnFoundExit()
