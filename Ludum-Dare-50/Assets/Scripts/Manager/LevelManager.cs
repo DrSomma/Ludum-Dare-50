@@ -21,15 +21,12 @@ public class LevelManager : MonoBehaviour
             Debug.LogError($"Do not add 2 {this.GetType()}");
         }
         #endregion
-        
-        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
         Endpoint.OnLevelComplete += LoadNextLevel;
-
-        CurLevel = 0;
+        CurLevel = SceneManager.GetActiveScene().buildIndex;
     }
 
     private void LoadNextLevel()
