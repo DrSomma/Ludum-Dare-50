@@ -300,6 +300,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[0].Name
+      value: Theme
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
 --- !u!1001 &1069653485

@@ -9,7 +9,8 @@ public class SoundManager : MonoBehaviour
     public enum Sounds
     {
         Theme,
-        Break
+        Break,
+        Pickup
     }
 
     private static Dictionary<string, float> _lastTimePlayedBySoundName;
@@ -31,7 +32,6 @@ public class SoundManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         _lastTimePlayedBySoundName = new Dictionary<string, float>();

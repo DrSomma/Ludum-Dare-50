@@ -15,8 +15,6 @@ public class Endpoint : MonoBehaviour
     [SerializeField]
     private float shakeSpeed = 1f;
     
-    public static event Action OnLevelComplete;
-
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!col.gameObject.CompareTag("Player"))
@@ -33,7 +31,7 @@ public class Endpoint : MonoBehaviour
 
     private void AnimationIsDone()
     {
-        OnLevelComplete?.Invoke();
+        GameManager.Instance.UpdateGameState(GameState.Playing);
     }
 
     private void SpawnFist(Transform playerTransform, TweenCallback onComplete = null)

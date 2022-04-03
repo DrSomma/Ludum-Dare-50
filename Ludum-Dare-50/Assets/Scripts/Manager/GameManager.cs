@@ -7,35 +7,42 @@ using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
-    #region SINGLETON PATTERN
+    public static GameManager Instance;
 
-    private static GameManager _instance;
+    public GameState CurrentState { get; private set; }
+    public static event Action<GameState> OnGameStateChange;
 
-    public static GameManager Instance
+    private void Awake()
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GameManager>();
-
-                if (_instance == null)
-                {
-                    GameObject container = new GameObject(name: "GameManager");
-                    _instance = container.AddComponent<GameManager>();
-                }
-            }
-
-            return _instance;
-        }
+        Instance = this;
     }
-
-    #endregion
 
     private void Start()
     {
-        Trap.OnTrapHit += KillPlayer;
         Collectable.OnCollect += OnCollect;
+    }
+
+    public void UpdateGameState(GameState newState)
+    {
+        if(CurrentState == newState)
+            return;
+        
+        CurrentState = newState;
+        switch (CurrentState)
+        {
+            case GameState.Playing:
+                break;
+            case GameState.LevelComplete:
+                LevelManager.Instance.LoadNextLevel();
+                break;
+            case GameState.Dead:
+                KillPlayer();
+                break;
+            
+            default: throw new ArgumentOutOfRangeException();
+        }
+        
+        OnGameStateChange?.Invoke(CurrentState);
     }
 
     private void OnCollect()
@@ -48,4 +55,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("KillPlayer");
         LevelManager.Instance.ReloadCurrentScene();
     }
+}
+
+public enum GameState
+{
+    Playing,
+    LevelComplete,
+    Dead
 }
