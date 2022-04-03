@@ -31,7 +31,7 @@ public class Endpoint : MonoBehaviour
 
     private void AnimationIsDone()
     {
-        GameManager.Instance.UpdateGameState(GameState.Playing);
+        GameManager.Instance.UpdateGameState(GameState.LevelComplete);
     }
 
     private void SpawnFist(Transform playerTransform, TweenCallback onComplete = null)
