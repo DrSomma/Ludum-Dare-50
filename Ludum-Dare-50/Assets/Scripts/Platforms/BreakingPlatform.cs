@@ -32,7 +32,7 @@ namespace Platforms
 
         private bool IsPlayerAbove(Collision2D col)
         {
-            return col.transform.position.y < transform.position.y;
+            return col.transform.position.y > transform.position.y;
         }
 
         //Just for debug!
