@@ -543,7 +543,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &637634612086747768
 Transform:
   m_ObjectHideFlags: 0
@@ -661,7 +661,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5e297bc620a9e43b29b62e934eb1e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundData: []
+  SoundData:
+  - Name: Theme
+    AudioClip: {fileID: 8300000, guid: 15bf99c5dbcb6224684b012aa3ba6156, type: 3}
+    Volume: 0.4
+    Pitch: 1
+    IsLoop: 1
+    HasCooldown: 0
+    AudioSource: {fileID: 0}
+  - Name: Break
+    AudioClip: {fileID: 8300000, guid: 6f270ab66659a4143abe6b2eca8639a0, type: 3}
+    Volume: 1
+    Pitch: 1
+    IsLoop: 0
+    HasCooldown: 0
+    AudioSource: {fileID: 0}
+  - Name: Pickup
+    AudioClip: {fileID: 8300000, guid: f6f20776975b05c468f0a57aa6abc802, type: 3}
+    Volume: 1
+    Pitch: 1
+    IsLoop: 0
+    HasCooldown: 0
+    AudioSource: {fileID: 0}
 --- !u!1 &637634613264445994
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,7 +699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &637634613264445995
 Transform:
   m_ObjectHideFlags: 0
