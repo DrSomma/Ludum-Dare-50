@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private LayerMask whatIsGround;
 
+    public bool IsFacingRight { get; private set; }
+    
     private bool _isGrounded;
 
     private float _lastJumpPressed;
@@ -50,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             _doJumpe = false;
+        }
+
+        if (Input.GetButtonDown("Horizontal"))
+        {
+            IsFacingRight = Input.GetAxisRaw("Horizontal") > 0;
         }
 
         if (_isGrounded && (_doJumpe || HasBufferedJump))
