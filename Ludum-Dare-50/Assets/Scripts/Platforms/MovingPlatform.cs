@@ -10,11 +10,12 @@ namespace Platforms
 
         [SerializeField]
         private Vector2 endPosRelativ;
+        
+        private Vector3 EndPos => new Vector3(x: transform.position.x + endPosRelativ.x, y: transform.position.y + endPosRelativ.y);
 
         private void Start()
         {
-            Vector3 endPos = new Vector3(x: transform.position.x + endPosRelativ.x, y: transform.position.y + endPosRelativ.y);
-            transform.DOMove(endValue: endPos, duration: speed).SetEase(Ease.InOutSine).SetSpeedBased().SetLoops(loops: -1,loopType: LoopType.Yoyo);
+            transform.DOMove(endValue: EndPos, duration: speed).SetEase(Ease.InOutSine).SetSpeedBased().SetLoops(loops: -1,loopType: LoopType.Yoyo);
         }
 
         private void OnCollisionEnter2D(Collision2D col)
@@ -27,11 +28,17 @@ namespace Platforms
             col.transform.SetParent(null);
         }
 
+        #region Debug
+        private SpriteRenderer _renderer; 
+        private Vector3? _endPos; 
         private void OnDrawGizmos()
         {
+            if (_renderer == null) _renderer = GetComponent<SpriteRenderer>();
+            if (!_endPos.HasValue) _endPos = EndPos;
             Vector3 position = transform.position;
-            Vector3 endPos = new Vector3(x: position.x + endPosRelativ.x, y: position.y + endPosRelativ.y);
-            Gizmos.DrawSphere(center: endPos,radius: 0.4f);
+            Gizmos.DrawWireCube(center: _endPos.Value,_renderer.size);
         }
+        #endregion
+       
     }
 }
