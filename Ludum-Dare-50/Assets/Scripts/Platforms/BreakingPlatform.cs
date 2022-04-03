@@ -14,7 +14,7 @@ namespace Platforms
         private int loopCount = 3;
     
         private bool _isBreaking;
-    
+
         private void OnCollisionEnter2D(Collision2D col)
         {
             if (!col.gameObject.CompareTag("Player"))
@@ -22,7 +22,17 @@ namespace Platforms
                 return;
             }
 
+            if (!IsPlayerAbove(col))
+            {
+                return;
+            }
+            
             Break();
+        }
+
+        private bool IsPlayerAbove(Collision2D col)
+        {
+            return col.transform.position.y < transform.position.y;
         }
 
         //Just for debug!
@@ -56,6 +66,8 @@ namespace Platforms
 
         private void DestroyMe()
         {
+            SoundManager.Instance.PlaySound(SoundManager.Sounds.Break);
+            
             SpriteRenderer sprite = GetComponent<SpriteRenderer>();
             Vector3 position = transform.position;
             Vector3 endPos = new Vector3(x: position.x, y: position.y - 5);

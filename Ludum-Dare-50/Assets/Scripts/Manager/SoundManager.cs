@@ -8,7 +8,8 @@ public class SoundManager : MonoBehaviour
 {
     public enum Sounds
     {
-        Theme
+        Theme,
+        Break
     }
 
     private static Dictionary<string, float> _lastTimePlayedBySoundName;

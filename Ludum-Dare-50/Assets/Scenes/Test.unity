@@ -1314,6 +1314,50 @@ PrefabInstance:
       propertyPath: m_Name
       value: Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082000, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[0].Name
+      value: Theme
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[1].Name
+      value: Break
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[0].Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[1].Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[0].IsLoop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[0].Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[1].Volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[0].AudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 15bf99c5dbcb6224684b012aa3ba6156, type: 3}
+    - target: {fileID: 637634613112082030, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
+      propertyPath: SoundData.Array.data[1].AudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e4e6f2d2b8b593e46b64ba47f020f159, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 807084c9217152147a34eb5d08f465a4, type: 3}
 --- !u!1001 &2321588536362626806
