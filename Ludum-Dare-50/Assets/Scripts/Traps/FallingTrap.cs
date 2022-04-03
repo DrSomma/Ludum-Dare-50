@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace Traps
 {
@@ -26,7 +27,7 @@ namespace Traps
         private LayerMask layerMask;
         
         [SerializeField]
-        private Collider2D collider;
+        private Collider2D trapCollider;
         
         private const float DistanceRaycast = 10f;
         
@@ -67,14 +68,14 @@ namespace Traps
             yield return null;
         }
         
-        protected override void ThisTrapOnHit()
+        protected override void ThisTrapOnHit(Vector2 vector2)
         {
             //Todo: effect
         }
 
         private void OnDrawGizmos()
         {
-            if(collider == null)
+            if(trapCollider == null)
                 return;
             _target = GetTargetPos();
             Gizmos.color = Color.magenta;
@@ -91,7 +92,7 @@ namespace Traps
                 return Vector2.down * 5f;
             }
 
-            float offsetY = collider.bounds.size.y / 2;
+            float offsetY = trapCollider.bounds.size.y / 2;
             return new Vector2(transform.position.x, hit.point.y + offsetY);
         }
     }

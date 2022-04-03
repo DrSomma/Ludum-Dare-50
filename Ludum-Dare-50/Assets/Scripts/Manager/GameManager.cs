@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public GameState CurrentState { get; private set; }
-    public static event Action<GameState> OnGameStateChange;
+    public event Action<GameState> OnGameStateChange;
 
     private void Awake()
     {
@@ -36,12 +36,15 @@ public class GameManager : MonoBehaviour
                 LevelManager.Instance.LoadNextLevel();
                 break;
             case GameState.Dead:
-                KillPlayer();
+                break;
+            case GameState.Reload:
+                Reload();
                 break;
             
             default: throw new ArgumentOutOfRangeException();
         }
-        
+
+        var test = OnGameStateChange?.GetInvocationList();
         OnGameStateChange?.Invoke(CurrentState);
     }
 
@@ -50,9 +53,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("you got one");
     }
 
-    private void KillPlayer()
+    private void Reload()
     {
-        Debug.Log("KillPlayer");
+        Debug.Log("Reload");
         LevelManager.Instance.ReloadCurrentScene();
     }
 }
@@ -61,5 +64,6 @@ public enum GameState
 {
     Playing,
     LevelComplete,
-    Dead
+    Dead,
+    Reload
 }

@@ -5,6 +5,9 @@ namespace Traps
 {
     public class Trap : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject particleSystem;
+        
         protected void OnCollisionEnter2D(Collision2D col)
         {
             if (!col.gameObject.CompareTag("Player"))
@@ -13,7 +16,7 @@ namespace Traps
             }
 
             KillPlayer();
-            ThisTrapOnHit();
+            ThisTrapOnHit(col.GetContact(0).point);
         }
 
         private void KillPlayer()
@@ -21,9 +24,11 @@ namespace Traps
             GameManager.Instance.UpdateGameState(GameState.Dead);
         }
 
-        protected virtual void ThisTrapOnHit()
+        protected virtual void ThisTrapOnHit(Vector2 pos)
         {
-            //Todo: effect
+            var ps = Instantiate(particleSystem);
+            ps.transform.position = pos;
+
         }
     }
 }
