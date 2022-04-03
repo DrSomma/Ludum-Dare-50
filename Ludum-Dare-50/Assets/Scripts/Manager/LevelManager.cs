@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,7 +19,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Do not add 2 {this.GetType()}");
+            Debug.Log($"Do not add 2 {this.GetType()}");
         }
         #endregion
     }
@@ -43,6 +44,8 @@ public class LevelManager : MonoBehaviour
     private void LoadLevel(int curLevel)
     {
         //Todo: level transition
+
+        DOTween.KillAll(false);
         
         var cntScenes = SceneManager.sceneCountInBuildSettings;
         Debug.Log($"Load level: {curLevel}/{cntScenes}");

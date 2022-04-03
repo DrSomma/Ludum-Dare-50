@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -8,7 +6,7 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     [SerializeField]
-    private ParticleSystem particleSystem;
+    private new ParticleSystem particleSystem;
     public static event Action OnCollect;
     
     private async void OnTriggerEnter2D(Collider2D col)

@@ -17,7 +17,7 @@ public class Endpoint : MonoBehaviour
     
     public static event Action OnLevelComplete;
 
-    private async void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
         if (!col.gameObject.CompareTag("Player"))
         {
@@ -27,11 +27,16 @@ public class Endpoint : MonoBehaviour
         Debug.Log("Exit!");
         PlayerMovement playerMovement = col.GetComponent<PlayerMovement>();
         playerMovement.OnFoundExit();
-        await SpawnFist(col.transform);
+        SpawnFist(col.transform, AnimationIsDone);
+        
+    }
+
+    private void AnimationIsDone()
+    {
         OnLevelComplete?.Invoke();
     }
 
-    private async Task SpawnFist(Transform playerTransform)
+    private void SpawnFist(Transform playerTransform, TweenCallback onComplete = null)
     {
         GameObject fistObj = Instantiate(fist);
         Transform fistTransform = fistObj.transform;
@@ -41,9 +46,11 @@ public class Endpoint : MonoBehaviour
         Vector3 startPos = new Vector3(x: playerPos.x, y: playerPos.y+10, z: 0);
         fistTransform.position = startPos;
 
-        await fistTransform.DOMove(endValue: endPos, duration: fistSpeed).SetEase(Ease.Flash).AsyncWaitForCompletion();
-        await playerTransform.DOShakeScale(shakeSpeed).AsyncWaitForCompletion();
-        await fistTransform.DOMove(endValue: startPos, duration: fistSpeed).SetEase(Ease.Flash).AsyncWaitForCompletion();
+        Sequence sp = DOTween.Sequence();
+        sp.Append(fistTransform.DOMove(endValue: endPos, duration: fistSpeed).SetEase(Ease.Flash));
+        sp.Append(playerTransform.DOShakeScale(shakeSpeed));
+        sp.Append(fistTransform.DOMove(endValue: startPos, duration: fistSpeed).SetEase(Ease.Flash));
+        sp.OnComplete(onComplete);
     }
 
     //just for testing
