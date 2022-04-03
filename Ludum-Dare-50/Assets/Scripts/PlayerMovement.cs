@@ -1,47 +1,55 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 5f;
+    private float Speed = 5f;
 
     [SerializeField]
-    private float jumpForce = 12f;
+    private float JumpForce = 12f;
 
     [SerializeField]
-    private float jumpBuffer = 0.1f;
+    private float JumpBuffer = 0.1f;
 
+    [FormerlySerializedAs("MAXFallSpeed")]
     [SerializeField]
-    private float maxFallSpeed = -25f;
+    private float MaxFallSpeed = -25f;
 
+    [FormerlySerializedAs("groudCheck")]
     [SerializeField]
-    private Transform groudCheck;
+    private Transform GroundCheck;
 
+    [FormerlySerializedAs("checkRadius")]
     [SerializeField]
-    private float checkRadius;
+    private float CheckRadius;
 
+    [FormerlySerializedAs("whatIsGround")]
     [SerializeField]
-    private LayerMask whatIsGround;
+    private LayerMask WhatIsGround;
 
-    public bool IsFacingRight { get; private set; }
-    
+    private readonly Collider2D[] _overlapResults = new Collider2D[2]; //can only detect 2 collisions
+
+    private bool _doJump;
+
     private bool _isGrounded;
 
     private float _lastJumpPressed;
-    private bool HasBufferedJump => _lastJumpPressed + jumpBuffer > Time.time;
-    private bool _doJumpe;
 
     private float _moveInput;
 
+    private Animator _playerMovementAnimator;
+
     private Rigidbody2D _rb;
-    private readonly Collider2D[] _overlapResults = new Collider2D[2]; //can only detect 2 collisions
+    private bool HasBufferedJump => _lastJumpPressed + JumpBuffer > Time.time;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _doJumpe = false;
+        _doJump = false;
         _lastJumpPressed = float.MinValue;
+        _playerMovementAnimator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -49,42 +57,48 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             _lastJumpPressed = Time.time;
-            _doJumpe = true;
+            _doJump = true;
         }
         else
         {
-            _doJumpe = false;
+            _doJump = false;
         }
 
         if (Input.GetButtonDown("Horizontal"))
         {
-            IsFacingRight = Input.GetAxisRaw("Horizontal") > 0;
+            SetFacingDirection();
         }
 
-        if (_isGrounded && (_doJumpe || HasBufferedJump))
+        if (_isGrounded && (_doJump || HasBufferedJump))
         {
-            _rb.velocity = Vector2.up * jumpForce;
+            _rb.velocity = Vector2.up * JumpForce;
             _isGrounded = false;
         }
     }
 
     private void FixedUpdate()
     {
-        _isGrounded = Physics2D.OverlapCircleNonAlloc(point: groudCheck.position, radius: checkRadius, results: _overlapResults, layerMask: whatIsGround) > 0;
+        _isGrounded = Physics2D.OverlapCircleNonAlloc(point: GroundCheck.position, radius: CheckRadius, results: _overlapResults, layerMask: WhatIsGround) > 0;
         _moveInput = Input.GetAxisRaw("Horizontal");
-        _rb.velocity = new Vector2(x: _moveInput * speed, y: Mathf.Max(a: maxFallSpeed, b: _rb.velocity.y));
+        _rb.velocity = new Vector2(x: _moveInput * Speed, y: Mathf.Max(a: MaxFallSpeed, b: _rb.velocity.y));
     }
 
     private void OnDrawGizmos()
     {
         // Bounds
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(center: groudCheck.position, radius: checkRadius);
+        Gizmos.DrawWireSphere(center: GroundCheck.position, radius: CheckRadius);
+    }
+
+    private void SetFacingDirection()
+    {
+        bool isFacingRight = Input.GetAxisRaw("Horizontal") > 0;
+        _playerMovementAnimator.SetBool(name: "IsFacingRight", value: isFacingRight);
     }
 
     public void OnFoundExit()
     {
         _rb.bodyType = RigidbodyType2D.Static; //stop moving
-        this.enabled = false;
+        enabled = false;
     }
 }
