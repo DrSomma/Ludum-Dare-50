@@ -703,7 +703,7 @@ MonoBehaviour:
     AudioClip: {fileID: 8300000, guid: 092c6b426b413fa45802ad9649957685, type: 3}
     Volume: 1
     pitch: 1
-    HasPitchVariante: 1
+    HasPitchVariante: 0
     PitchVariante: {x: -0.84851336, y: 0.42999995}
     IsLoop: 0
     HasCooldown: 0
