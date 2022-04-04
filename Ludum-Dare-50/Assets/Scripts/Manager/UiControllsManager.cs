@@ -20,6 +20,10 @@ namespace Manager
                 Debug.Log("playinggg setaktic");
                 controlls.interactable = true;
             }
+            else
+            {
+                controlls.interactable = false;
+            }
         }
 
         public void OnHomeClicked()

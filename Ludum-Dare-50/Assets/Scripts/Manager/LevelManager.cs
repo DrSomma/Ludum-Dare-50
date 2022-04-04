@@ -37,8 +37,7 @@ namespace Manager
 
         public void LoadNextLevel()
         {
-            CurLevel++;
-            LoadLevel(CurLevel);
+            LoadLevel(CurLevel++);
         }
 
         public void ReloadCurrentScene()
@@ -53,6 +52,8 @@ namespace Manager
             {
                 return;
             }
+
+            CurLevel = curLevel;
 
             GameManager.Instance.UpdateGameState(GameState.Loading);
             StartCoroutine(StartLevelLoad(curLevel));
@@ -69,6 +70,10 @@ namespace Manager
         private void OnTransitionComplete(int curLevel)
         {
             DOTween.KillAll(false);
+            
+            //if sound is still running... 
+            SoundManager.Instance.StopSound(SoundManager.Sounds.AlarmTicking);
+            
             SceneManager.LoadScene(curLevel);
             nextLevelTransition.DoTransition(NextLevelTransition.TransitionFace.Open,
                 () =>

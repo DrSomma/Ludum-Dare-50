@@ -76,16 +76,21 @@ namespace Manager
             bool newBestTime = false;
             if (bestTime.TryGetValue(curLevel, out float curBestTime))
             {
+                Debug.Log($"best time for level {curLevel} was {curBestTime} now {curTime} best? {curBestTime > curTime}");
                 if (curBestTime > curTime)
                 {
                     bestTime[curLevel] = curTime;
+                    newBestTime = true;
+                }
+                else
+                {
                     TimeSpan timeSpan = TimeSpan.FromSeconds(curBestTime);
                     txtNewBestTime.SetText(timeSpan.ToString(TIME_FORMAT));
-                    newBestTime = true;
                 }
             }
             else
             {
+                Debug.Log("No besttime for level " + curLevel);
                 bestTime.Add(curLevel, curTime);
                 newBestTime = true;
             }
