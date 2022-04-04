@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using Manager;
 using Player;
 using UnityEngine;
 

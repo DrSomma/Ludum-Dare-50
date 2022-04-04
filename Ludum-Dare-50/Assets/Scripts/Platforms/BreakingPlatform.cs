@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Manager;
 using UnityEngine;
 
 namespace Platforms
