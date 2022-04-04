@@ -10,6 +10,9 @@ namespace Player
         
         [SerializeField]
         private PlayerLifeController playerLifeController;
+
+        [SerializeField]
+        private ParticleSystem dust;
         
         public void Start()
         {
@@ -20,6 +23,11 @@ namespace Player
         {
             GameObject ps = Instantiate(particleHurt);
             ps.transform.position = playerLifeController.transform.position;
+        }
+
+        public void SpawnDustParticels()
+        {
+            dust.Play();
         }
     }
 }

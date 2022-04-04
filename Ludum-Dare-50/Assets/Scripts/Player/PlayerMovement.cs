@@ -36,6 +36,9 @@ namespace Player
         [SerializeField]
         private Rigidbody2D MyRigidbody2D;
 
+        [SerializeField]
+        private PlayerParticleController playerParticles;
+        
         private readonly Collider2D[] _overlapResults = new Collider2D[2]; //can only detect 2 collisions
 
         public bool OnGround => _isGrounded;
@@ -52,7 +55,6 @@ namespace Player
 
         private bool _canMove = true;
 
-    
         private SpriteRenderer[] _allSpriteRenderers;
     
         private bool HasBufferedJump => _lastJumpPressed + JumpBuffer > Time.time;
@@ -144,6 +146,8 @@ namespace Player
                     }));
                 sp.Append(transform.DOScale(new Vector3(0.5f, 1, 1), 0.2f));
                 sp.Append(transform.DOScale(new Vector3(1, 1, 1), 0.5f));
+                
+                playerParticles.SpawnDustParticels();
             }
         }
 
@@ -162,7 +166,10 @@ namespace Player
 
         private void FixedUpdate()
         {
-            _isGrounded = IsGrounded();
+            if (IsGrounded() && !_isGrounded)
+            {
+                OnLand();
+            }
         
             if (!_canMove)
             {
@@ -170,6 +177,13 @@ namespace Player
             }
             _moveInput = Input.GetAxisRaw("Horizontal");
             MyRigidbody2D.velocity = new Vector2(x: _moveInput * Speed, y: Mathf.Max(a: MaxFallSpeed, b: MyRigidbody2D.velocity.y));
+        }
+
+        private void OnLand()
+        {
+            Debug.Log("onland");
+            _isGrounded = true;
+            playerParticles.SpawnDustParticels();
         }
 
         private bool IsGrounded()
@@ -187,12 +201,20 @@ namespace Player
         private void SetFacingDirectionAnimation(float horizontalAxis)
         {
             bool oldIsFacingRight = _playerMovementAnimator.GetBool("IsFacingRight");
-            if (!oldIsFacingRight && horizontalAxis == 0)
+            bool nowIsFacingRight = horizontalAxis >= 0;
+            bool isFacingChanged = oldIsFacingRight ^ nowIsFacingRight;
+            if (!isFacingChanged)
             {
                 return;
             }
         
-            _isFacingRight = horizontalAxis >= 0;
+            DoFlip(nowIsFacingRight);
+        }
+
+        private void DoFlip(bool nowIsFacingRight)
+        {
+            playerParticles.SpawnDustParticels();
+            _isFacingRight = nowIsFacingRight;
             _playerMovementAnimator.SetBool(name: "IsFacingRight", value: _isFacingRight);
         }
 
