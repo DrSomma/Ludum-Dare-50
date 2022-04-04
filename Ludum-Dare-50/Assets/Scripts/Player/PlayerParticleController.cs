@@ -13,10 +13,10 @@ namespace Player
         
         public void Start()
         {
-            playerLifeController.OnPlayerHurt += OnPlayerHurt;
+            playerLifeController.OnPlayerHit += OnPlayerHit;
         }
 
-        private void OnPlayerHurt()
+        private void OnPlayerHit()
         {
             GameObject ps = Instantiate(particleHurt);
             ps.transform.position = playerLifeController.transform.position;

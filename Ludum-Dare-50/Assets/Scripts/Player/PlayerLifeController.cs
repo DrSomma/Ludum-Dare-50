@@ -9,7 +9,7 @@ public class PlayerLifeController : MonoBehaviour
     [SerializeField]
     private int playerLifeForThisLevel = 1;
 
-    public event Action OnPlayerHurt;
+    public event Action OnPlayerHit;
     
     private bool HasLifesLevt => _lifes == 0;
     
@@ -20,9 +20,14 @@ public class PlayerLifeController : MonoBehaviour
         _lifes = playerLifeForThisLevel;
     }
 
+    public void HitPlayer()
+    {
+        OnPlayerHit?.Invoke();
+    }
+
     public void HurtPlayer()
     {
-        OnPlayerHurt?.Invoke();
+        HitPlayer();
 
         _lifes--;
         if (HasLifesLevt)

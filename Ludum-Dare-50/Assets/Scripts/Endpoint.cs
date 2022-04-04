@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using Player;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class Endpoint : MonoBehaviour
 {
@@ -37,9 +36,13 @@ public class Endpoint : MonoBehaviour
     {
         _player = GameObject.FindGameObjectWithTag("Player");
 
-        _onEndpointReached = (GameState state) =>
+        _onEndpointReached = state =>
         {
-            if (state != GameState.OnEndpoint) return;
+            if (state != GameState.OnEndpoint)
+            {
+                return;
+            }
+
             StartCoroutine(StartEndAnimation(_player));
         };
         GameManager.Instance.OnGameStateChange += _onEndpointReached;
@@ -56,10 +59,14 @@ public class Endpoint : MonoBehaviour
         {
             return;
         }
-        if(_wasTriggert)
+
+        if (_wasTriggert)
+        {
             return;
+        }
+
         _wasTriggert = true;
-        
+
         Debug.Log("Exit!");
 
         GameManager.Instance.UpdateGameState(GameState.OnEndpoint);
@@ -78,7 +85,7 @@ public class Endpoint : MonoBehaviour
 
     private void AnimationIsDone()
     {
-        SoundManager.Instance.StopSound(SoundManager.Sounds.Alarm, fade: true);
+        SoundManager.Instance.StopSound(soundEnum: SoundManager.Sounds.Alarm, fade: true);
         GameManager.Instance.UpdateGameState(GameState.LevelComplete);
     }
 
@@ -86,7 +93,7 @@ public class Endpoint : MonoBehaviour
     {
         GameObject fistObj = Instantiate(fist);
         GameObject snoozeObj = Instantiate(snooze);
-        TextAnimator snooteAnimation = snoozeObj.GetComponent<TextAnimator>();
+        TextAnimator snoozeAnimation = snoozeObj.GetComponent<TextAnimator>();
 
         Transform fistTransform = fistObj.transform;
         Transform snoozeTransform = snoozeObj.transform;
@@ -98,8 +105,8 @@ public class Endpoint : MonoBehaviour
         fistTransform.position = startPos;
 
         //snooze
-        snoozeTransform.position = new Vector3(endPos.x - 2.2f, endPos.y);
-        snooteAnimation.Init();
+        snoozeTransform.position = new Vector3(x: endPos.x - 2.2f, y: endPos.y);
+        snoozeAnimation.Init();
 
         //play music
         SoundManager.Instance.StopSound(SoundManager.Sounds.AlarmTicking);
@@ -108,27 +115,47 @@ public class Endpoint : MonoBehaviour
         Sequence sp = DOTween.Sequence();
         sp.SetDelay(0.5f);
         sp.Append(fistTransform.DOMove(endValue: endPos, duration: fistSpeed).SetEase(Ease.Flash));
-        sp.Append(playerTransform.DOShakeScale(shakeSpeed));
-        sp.Join(snooteAnimation.GetAnimation());
-        sp.Join(SoundManager.Instance.StopSoundFadeOutAndPitch(SoundManager.Sounds.Alarm));
-        sp.Append(fistTransform.DOMove(endValue: startPos, duration: fistSpeed).SetEase(Ease.Flash));
+        sp.Append(GetAnimationSequenceOnFistHit(playerTransform: playerTransform, snoozeAnimation: snoozeAnimation));
+        sp.Append(GetAnimationSequenceOnFistUp(fistTransform: fistTransform, startPos: startPos, snoozeAnimation: snoozeAnimation));
         sp.OnComplete(onComplete);
+    }
+
+    private Tween GetAnimationSequenceOnFistUp(Transform fistTransform, Vector3 startPos,TextAnimator snoozeAnimation)
+    {
+        Sequence sp = DOTween.Sequence();
+        sp.Append(fistTransform.DOMove(endValue: startPos, duration: fistSpeed).SetEase(Ease.Flash));
+        sp.Join(snoozeAnimation.GetAnimation(true));
+        return sp;
+    }
+
+    private Tween GetAnimationSequenceOnFistHit(Transform playerTransform, TextAnimator snoozeAnimation)
+    {
+        Sequence sp = DOTween.Sequence();
+        sp.Append(playerTransform.DOShakeScale(shakeSpeed));
+        sp.Join(snoozeAnimation.GetAnimation(false));
+        sp.Join(SoundManager.Instance.StopSoundFadeOutAndPitch(SoundManager.Sounds.Alarm));
+        sp.OnPlay(
+            () =>
+            {
+                playerTransform.GetComponent<PlayerLifeController>().HitPlayer();
+            });
+        return sp;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, distanceTicking);
+        Gizmos.DrawWireSphere(center: transform.position, radius: distanceTicking);
     }
 
     private void Update()
     {
-        if (Vector2.Distance(_player.transform.position, transform.position) <= distanceTicking)
+        if (Vector2.Distance(a: _player.transform.position, b: transform.position) <= distanceTicking)
         {
             if (!_isPlayerNear)
             {
                 Debug.Log("PLAY!!!");
-                SoundManager.Instance.PlaySound(SoundManager.Sounds.AlarmTicking, fade: true);
+                SoundManager.Instance.PlaySound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
                 _isPlayerNear = true;
             }
         }
@@ -137,7 +164,7 @@ public class Endpoint : MonoBehaviour
             if (_isPlayerNear)
             {
                 Debug.Log("Stop!!!");
-                SoundManager.Instance.StopSound(SoundManager.Sounds.AlarmTicking, true);
+                SoundManager.Instance.StopSound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
             }
 
             _isPlayerNear = false;
