@@ -88,7 +88,7 @@ public class Endpoint : MonoBehaviour
     private void AnimationIsDone()
     {
         SoundManager.Instance.StopSound(soundEnum: SoundManager.Sounds.Alarm, fade: true);
-        _playerMovementAnimator.SetBool(name: "IsRinging", value: false);
+        _playerMovementAnimator.SetBool(name: "IsRinging", value: true);
         GameManager.Instance.UpdateGameState(GameState.LevelComplete);
     }
 
