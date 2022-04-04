@@ -211,7 +211,7 @@ namespace Player
         private void SetFacingDirectionAnimation(float horizontalAxis)
         {
             bool oldIsFacingRight = _playerMovementAnimator.GetBool("IsFacingRight");
-            bool nowIsFacingRight = horizontalAxis >= 0;
+            bool nowIsFacingRight = horizontalAxis > 0;
             bool isFacingChanged = oldIsFacingRight ^ nowIsFacingRight;
             if (!isFacingChanged)
             {
