@@ -20,13 +20,13 @@ public class SoundManager : MonoBehaviour
 
     private static Dictionary<string, float> _lastTimePlayedBySoundName;
 
+    private static List<GameObject> _currentSoundGameObjects;
+
     [Header("Sounds")]
     [Tooltip("Möglichkeit Sounds zu dem Spiel hinzuzufügen. Tipp: Lautet der Name 'Theme' wird dies als Theme beim Starten abgespielt.")]
     public List<Sound> SoundData;
 
     public static SoundManager Instance { get; private set; }
-
-    private static List<GameObject> _currentSoundGameObjects;
 
     private void Awake()
     {
@@ -87,7 +87,7 @@ public class SoundManager : MonoBehaviour
                 PlaySound(soundEnum);
                 return;
             }
-            
+
             sound.AudioSource.DOFade(endValue: sound.Volume, duration: 0.5f).From(0);
             sound.AudioSource.Play();
         }
@@ -136,20 +136,20 @@ public class SoundManager : MonoBehaviour
             StopSound(soundEnum);
         }
     }
-    
+
     public Sequence StopSoundFadeOutAndPitch(Sounds soundEnum)
     {
         Sound sound = GetSound(soundEnum)!;
         Sequence sq = DOTween.Sequence();
-        sq.Append(sound.AudioSource.DOFade(endValue: 0, duration: 0.5f));
-        sq.Join(sound.AudioSource.DOPitch(endValue: 0.5f, duration: 0.5f));
-        sq.OnComplete(() =>
-        {
-            //reset sound
-            sound.AudioSource.pitch = sound.Pitch;
-            sound.AudioSource.Stop();
-            
-        });
+        sq.Append(sound.AudioSource.DOFade(endValue: 0, duration: 1.5f));
+        sq.Join(sound.AudioSource.DOPitch(endValue: 0.1f, duration: 1f));
+        sq.OnComplete(
+            () =>
+            {
+                //reset sound
+                sound.AudioSource.pitch = sound.Pitch;
+                sound.AudioSource.Stop();
+            });
         return sq;
     }
 
