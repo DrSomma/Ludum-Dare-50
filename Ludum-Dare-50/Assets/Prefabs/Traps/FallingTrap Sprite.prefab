@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a6a87d58cf4e9e49b5ef16c89ca95e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDeathParticleSystem: {fileID: 0}
   speedDown: 15
   speedUp: 3
   delayBetween: 2
@@ -129,4 +130,4 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 64
-  collider: {fileID: 7205890014018098205}
+  trapCollider: {fileID: 0}

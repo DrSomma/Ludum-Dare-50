@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -10,7 +11,9 @@ public class SoundManager : MonoBehaviour
     {
         Theme,
         Break,
-        Pickup
+        Pickup,
+        Alarm,
+        AlarmTicking
     }
 
     private static Dictionary<string, float> _lastTimePlayedBySoundName;
@@ -66,6 +69,24 @@ public class SoundManager : MonoBehaviour
 
         if (sound != null && CanPlaySound(sound))
         {
+            sound.AudioSource.volume = sound.Volume;
+            sound.AudioSource.Play();
+        }
+    }
+
+    public void PlaySound(Sounds soundEnum, bool fade)
+    {
+        Sound sound = GetSound(soundEnum);
+
+        if (sound != null && CanPlaySound(sound))
+        {
+            if (fade)
+            {
+                PlaySound(soundEnum);
+                return;
+            }
+            
+            sound.AudioSource.DOFade(endValue: sound.Volume, duration: 0.5f).From(0);
             sound.AudioSource.Play();
         }
     }
@@ -94,6 +115,34 @@ public class SoundManager : MonoBehaviour
     public void StopSound(Sounds soundEnum)
     {
         GetSound(soundEnum)?.AudioSource.Stop();
+    }
+
+    public void StopSound(Sounds soundEnum, bool fade)
+    {
+        Sound sound = GetSound(soundEnum);
+        if (sound == null)
+        {
+            return;
+        }
+
+        if (fade)
+        {
+            sound.AudioSource.DOFade(endValue: 0, duration: 0.5f).OnComplete(() => { sound.AudioSource.Stop(); });
+        }
+        else
+        {
+            StopSound(soundEnum);
+        }
+    }
+    
+    public Sequence StopSoundFadeOutAndPitch(Sounds soundEnum)
+    {
+        Sound sound = GetSound(soundEnum)!;
+        Sequence sq = DOTween.Sequence();
+        sq.Append(sound.AudioSource.DOFade(endValue: 0, duration: 0.5f));
+        sq.Join(sound.AudioSource.DOPitch(endValue: 0.5f, duration: 0.5f));
+        sq.OnComplete(() => { sound.AudioSource.Stop(); });
+        return sq;
     }
 
     public void MuteSound(Sounds soundEnum, bool newValue)
