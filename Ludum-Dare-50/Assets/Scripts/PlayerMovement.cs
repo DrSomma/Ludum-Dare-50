@@ -78,7 +78,6 @@ public class PlayerMovement : MonoBehaviour
         switch (state)
         {
             case GameState.Playing:
-                Debug.Log("sdadlalnlda");
                 _canMove = true;
                 break;
             case GameState.Dead:
@@ -143,9 +142,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (jumpButtonPressed)
         {
+            bool isJumpingInThisFrame = !_doJump;
             _lastJumpPressed = Time.time;
             _doJump = true;
-            transform.DOScale(new Vector3(0.5f,1,1), 0.1f).SetEase(Ease.InOutBounce).SetLoops(2,LoopType.Yoyo);
+            if (isJumpingInThisFrame)
+            {
+                transform.DOScale(new Vector3(1, 0.5f, 1), 0.1f).SetEase(Ease.InOutBounce).SetLoops(2, LoopType.Yoyo);
+            }
         }
         else
         {
