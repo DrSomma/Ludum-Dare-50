@@ -26,6 +26,7 @@ public class Endpoint : MonoBehaviour
     private Action<GameState> _onEndpointReached;
 
     private GameObject _player;
+    private Animator _playerMovementAnimator;
 
     private bool _isPlayerNear;
 
@@ -35,6 +36,7 @@ public class Endpoint : MonoBehaviour
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+        _playerMovementAnimator = GetComponentInChildren<Animator>();
 
         _onEndpointReached = state =>
         {
@@ -150,12 +152,17 @@ public class Endpoint : MonoBehaviour
 
     private void Update()
     {
-        if (Vector2.Distance(a: _player.transform.position, b: transform.position) <= distanceTicking)
+        DoPlayerNearTrigger();
+    }
+
+    private void DoPlayerNearTrigger()
+    {
+        if (IsPlayerNear())
         {
             if (!_isPlayerNear)
             {
                 Debug.Log("PLAY!!!");
-                SoundManager.Instance.PlaySound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
+                OnPlayerNearTriggerEnter();
                 _isPlayerNear = true;
             }
         }
@@ -164,18 +171,29 @@ public class Endpoint : MonoBehaviour
             if (_isPlayerNear)
             {
                 Debug.Log("Stop!!!");
-                SoundManager.Instance.StopSound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
+                OnPlayerNearTriggerExit();
             }
 
             _isPlayerNear = false;
         }
+    }
 
-        //just for testing
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log("spawn");
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            SpawnFist(player.transform);
-        }
+    private void OnPlayerNearTriggerExit()
+    {
+        SoundManager.Instance.StopSound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
+        //TODO: MARVIN HIER DIE ANIMATION!!
+        _playerMovementAnimator.SetBool("dada", false);
+    }
+
+    private void OnPlayerNearTriggerEnter()
+    {
+        SoundManager.Instance.PlaySound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
+        //TODO: MARVIN HIER DIE ANIMATION!!
+        _playerMovementAnimator.SetBool("dada", true);
+    }
+
+    private bool IsPlayerNear()
+    {
+        return Vector2.Distance(a: _player.transform.position, b: transform.position) <= distanceTicking;
     }
 }
