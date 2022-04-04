@@ -141,7 +141,13 @@ public class SoundManager : MonoBehaviour
         Sequence sq = DOTween.Sequence();
         sq.Append(sound.AudioSource.DOFade(endValue: 0, duration: 0.5f));
         sq.Join(sound.AudioSource.DOPitch(endValue: 0.5f, duration: 0.5f));
-        sq.OnComplete(() => { sound.AudioSource.Stop(); });
+        sq.OnComplete(() =>
+        {
+            //reset sound
+            sound.AudioSource.pitch = sound.Pitch;
+            sound.AudioSource.Stop();
+            
+        });
         return sq;
     }
 
