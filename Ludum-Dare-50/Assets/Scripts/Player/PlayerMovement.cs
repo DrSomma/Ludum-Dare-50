@@ -218,7 +218,7 @@ namespace Player
         {
             bool oldIsFacingRight = _playerMovementAnimator.GetBool("IsFacingRight");
             bool nowIsFacingRight = horizontalAxis > 0;
-            bool isFacingChanged = oldIsFacingRight ^ nowIsFacingRight;
+            bool isFacingChanged = (oldIsFacingRight ^ nowIsFacingRight) && horizontalAxis != 0;
             if (!isFacingChanged)
             {
                 return;
