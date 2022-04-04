@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using Player;
 using UnityEngine;
 
@@ -23,12 +21,12 @@ public class Endpoint : MonoBehaviour
     [SerializeField]
     private float distanceTicking = 4f;
 
+    private bool _isPlayerNear;
+
     private Action<GameState> _onEndpointReached;
 
     private GameObject _player;
     private Animator _playerMovementAnimator;
-
-    private bool _isPlayerNear;
 
     private bool _wasTriggert;
 
@@ -36,7 +34,7 @@ public class Endpoint : MonoBehaviour
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        _playerMovementAnimator = GetComponentInChildren<Animator>();
+        _playerMovementAnimator = _player.GetComponentInChildren<Animator>();
 
         _onEndpointReached = state =>
         {
@@ -50,9 +48,20 @@ public class Endpoint : MonoBehaviour
         GameManager.Instance.OnGameStateChange += _onEndpointReached;
     }
 
+    private void Update()
+    {
+        DoPlayerNearTrigger();
+    }
+
     private void OnDestroy()
     {
         GameManager.Instance.OnGameStateChange -= _onEndpointReached;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(center: transform.position, radius: distanceTicking);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -123,7 +132,7 @@ public class Endpoint : MonoBehaviour
         sp.OnComplete(onComplete);
     }
 
-    private Tween GetAnimationSequenceOnFistUp(Transform fistTransform, Vector3 startPos,TextAnimator snoozeAnimation)
+    private Tween GetAnimationSequenceOnFistUp(Transform fistTransform, Vector3 startPos, TextAnimator snoozeAnimation)
     {
         Sequence sp = DOTween.Sequence();
         sp.Append(fistTransform.DOMove(endValue: startPos, duration: fistSpeed).SetEase(Ease.Flash));
@@ -137,23 +146,8 @@ public class Endpoint : MonoBehaviour
         sp.Append(playerTransform.DOShakeScale(shakeSpeed));
         sp.Join(snoozeAnimation.GetAnimation(false));
         sp.Join(SoundManager.Instance.StopSoundFadeOutAndPitch(SoundManager.Sounds.Alarm));
-        sp.OnPlay(
-            () =>
-            {
-                playerTransform.GetComponent<PlayerLifeController>().HitPlayer();
-            });
+        sp.OnPlay(() => { playerTransform.GetComponent<PlayerLifeController>().HitPlayer(); });
         return sp;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(center: transform.position, radius: distanceTicking);
-    }
-
-    private void Update()
-    {
-        DoPlayerNearTrigger();
     }
 
     private void DoPlayerNearTrigger()
@@ -182,15 +176,13 @@ public class Endpoint : MonoBehaviour
     private void OnPlayerNearTriggerExit()
     {
         SoundManager.Instance.StopSound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
-        //TODO: MARVIN HIER DIE ANIMATION!!
-        _playerMovementAnimator.SetBool("dada", false);
+        _playerMovementAnimator.SetBool(name: "IsTickingFaster", value: false);
     }
 
     private void OnPlayerNearTriggerEnter()
     {
         SoundManager.Instance.PlaySound(soundEnum: SoundManager.Sounds.AlarmTicking, fade: true);
-        //TODO: MARVIN HIER DIE ANIMATION!!
-        _playerMovementAnimator.SetBool("dada", true);
+        _playerMovementAnimator.SetBool(name: "IsTickingFaster", value: true);
     }
 
     private bool IsPlayerNear()
