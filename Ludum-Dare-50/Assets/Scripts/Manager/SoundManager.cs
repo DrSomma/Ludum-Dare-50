@@ -13,7 +13,9 @@ public class SoundManager : MonoBehaviour
         Break,
         Pickup,
         Alarm,
-        AlarmTicking
+        AlarmTicking,
+        Jump,
+        Hurt
     }
 
     private static Dictionary<string, float> _lastTimePlayedBySoundName;

@@ -127,31 +127,39 @@ namespace Player
             {
                 return;
             }
-        
-            DoJump(Input.GetButtonDown("Jump"));
-
+            
             float horizontalAxis = Input.GetAxisRaw("Horizontal");
 
             SetFacingDirectionAnimation(horizontalAxis);
             SetIsRunningAnimation(horizontalAxis);
 
-            if (_isGrounded && (_doJump || HasBufferedJump))
+            if (CheckForJumpInput(Input.GetButtonDown("Jump")))
             {
-                var sp = DOTween.Sequence();
-                sp.Append(transform.DOScale(new Vector3(1, 0.5f, 1), 0.02f).From(Vector3.one).OnComplete(
-                    () =>
-                    {
-                        MyRigidbody2D.velocity = Vector2.up * JumpForce;
-                        _isGrounded = false;
-                    }));
-                sp.Append(transform.DOScale(new Vector3(0.5f, 1, 1), 0.2f));
-                sp.Append(transform.DOScale(new Vector3(1, 1, 1), 0.5f));
-                
-                playerParticles.SpawnDustParticels();
+                DoJump();
             }
         }
 
-        private void DoJump(bool jumpButtonPressed)
+        private void DoJump()
+        {
+            //animation
+            Sequence sp = DOTween.Sequence();
+            sp.Append(transform.DOScale(new Vector3(1, 0.5f, 1), 0.02f).From(Vector3.one).OnComplete(
+                () =>
+                {
+                    MyRigidbody2D.velocity = Vector2.up * JumpForce;
+                    _isGrounded = false;
+                }));
+            sp.Append(transform.DOScale(new Vector3(0.5f, 1, 1), 0.2f));
+            sp.Append(transform.DOScale(new Vector3(1, 1, 1), 0.5f));
+
+            //particles
+            playerParticles.SpawnDustParticels();
+            
+            //sound
+            SoundManager.Instance.PlaySound(SoundManager.Sounds.Jump);
+        }
+
+        private bool CheckForJumpInput(bool jumpButtonPressed)
         {
             if (jumpButtonPressed)
             {
@@ -162,6 +170,8 @@ namespace Player
             {
                 _doJump = false;
             }
+
+            return _isGrounded && (_doJump || HasBufferedJump);
         }
 
         private void FixedUpdate()

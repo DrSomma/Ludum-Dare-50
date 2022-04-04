@@ -698,6 +698,20 @@ MonoBehaviour:
     IsLoop: 0
     HasCooldown: 0
     AudioSource: {fileID: 0}
+  - Name: Jump
+    AudioClip: {fileID: 8300000, guid: 461dc67d1b7a9ed468c7a32c39b23234, type: 3}
+    Volume: 0.1
+    Pitch: 1
+    IsLoop: 0
+    HasCooldown: 0
+    AudioSource: {fileID: 0}
+  - Name: Hurt
+    AudioClip: {fileID: 8300000, guid: 4ed7b19c86f8ae84bae2e4fadde2a5e5, type: 3}
+    Volume: 0.195
+    Pitch: 0.905
+    IsLoop: 0
+    HasCooldown: 0
+    AudioSource: {fileID: 0}
 --- !u!1 &637634613264445994
 GameObject:
   m_ObjectHideFlags: 0

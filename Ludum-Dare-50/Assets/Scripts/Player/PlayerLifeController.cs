@@ -29,6 +29,8 @@ public class PlayerLifeController : MonoBehaviour
     {
         HitPlayer();
 
+        SoundManager.Instance.PlaySound(SoundManager.Sounds.Hurt);
+        
         _lifes--;
         if (HasLifesLevt)
         {
