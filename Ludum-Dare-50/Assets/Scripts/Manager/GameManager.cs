@@ -46,6 +46,8 @@ namespace Manager
                 case GameState.Reload:
                     Reload();
                     break;
+                case GameState.Loading:
+                    break;
                 default: throw new ArgumentOutOfRangeException();
             }
 
@@ -62,6 +64,7 @@ namespace Manager
             Debug.Log("Reload");
             LevelManager.Instance.ReloadCurrentScene();
         }
+        
     }
 
     public enum GameState
@@ -70,6 +73,7 @@ namespace Manager
         LevelComplete,
         Dead,
         Reload,
+        Loading,
         OnEndpoint
     }
 }

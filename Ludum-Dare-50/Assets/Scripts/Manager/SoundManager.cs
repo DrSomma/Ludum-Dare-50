@@ -220,5 +220,15 @@ namespace Manager
 
             return false;
         }
+
+        public void MuteAllSounds()
+        {
+            SoundData.ForEach(sound => sound.AudioSource.mute = true);
+        }
+
+        public void UnmuteAllSounds()
+        {
+            SoundData.ForEach(sound => sound.AudioSource.mute = false);
+        }
     }
 }

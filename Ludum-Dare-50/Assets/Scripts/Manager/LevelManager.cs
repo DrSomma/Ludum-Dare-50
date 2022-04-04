@@ -54,6 +54,7 @@ namespace Manager
                 return;
             }
 
+            GameManager.Instance.UpdateGameState(GameState.Loading);
             StartCoroutine(StartLevelLoad(curLevel));
         }
 
@@ -74,6 +75,11 @@ namespace Manager
                 {
                     GameManager.Instance.UpdateGameState(GameState.Playing);
                 });
+        }
+
+        public void LoadMainMenu()
+        {
+            LoadLevel(0);
         }
     }
 }
