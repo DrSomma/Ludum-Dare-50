@@ -37,7 +37,7 @@ namespace Manager
 
         public void LoadNextLevel()
         {
-            LoadLevel(CurLevel++);
+            LoadLevel(++CurLevel);
         }
 
         public void ReloadCurrentScene()
