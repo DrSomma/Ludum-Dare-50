@@ -23,7 +23,10 @@ namespace Manager
         
         [SerializeField]
         private Color colorNoBestTime;
-        
+
+        [SerializeField]
+        private List<int> blackListLevel = new List<int>() {0, 1};
+
         public IReadOnlyDictionary<int, float> BestTime => bestTime;
         private Dictionary<int, float> bestTime;
 
@@ -47,6 +50,8 @@ namespace Manager
 
         private void ResetUi()
         {
+            bool isOnBlackList = blackListLevel.Contains(LevelManager.Instance.CurLevel);
+            txtTimer.transform.gameObject.SetActive(!isOnBlackList);
             txtTimer.text = "00.00";
             _count = true;
             txtNewBestTime.alpha = 0; //hide best time

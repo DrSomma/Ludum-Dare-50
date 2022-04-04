@@ -15,9 +15,8 @@ namespace Manager
 
         private void OnStart(GameState state)
         {
-            if (state == GameState.Playing)
+            if (state == GameState.Playing && !(LevelManager.Instance.CurLevel == 0))
             {
-                Debug.Log("playinggg setaktic");
                 controlls.interactable = true;
             }
             else
