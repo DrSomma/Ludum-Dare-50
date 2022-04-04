@@ -73,6 +73,7 @@ namespace Player
         private void Start()
         {
             _canMove = GameManager.Instance.CurrentState == GameState.Playing;
+            _isGrounded = IsGrounded();
             _myOnGameStateChangeEvent = OnGameStateChange;
             GameManager.Instance.OnGameStateChange += _myOnGameStateChangeEvent;
         }
@@ -147,7 +148,6 @@ namespace Player
                 () =>
                 {
                     MyRigidbody2D.velocity = Vector2.up * JumpForce;
-                    _isGrounded = false;
                 }));
             sp.Append(transform.DOScale(new Vector3(0.5f, 1, 1), 0.2f));
             sp.Append(transform.DOScale(new Vector3(1, 1, 1), 0.5f));
@@ -163,22 +163,28 @@ namespace Player
         {
             if (jumpButtonPressed)
             {
-                _lastJumpPressed = Time.time;
+                if(!_isGrounded)
+                    _lastJumpPressed = Time.time;
                 _doJump = true;
             }
             else
             {
                 _doJump = false;
             }
-
+            
             return _isGrounded && (_doJump || HasBufferedJump);
         }
 
         private void FixedUpdate()
         {
-            if (IsGrounded() && !_isGrounded)
+            if (IsGrounded())
             {
-                OnLand();
+                if(!_isGrounded)
+                    OnLand();
+            }
+            else
+            {
+                _isGrounded = false;
             }
         
             if (!_canMove)
