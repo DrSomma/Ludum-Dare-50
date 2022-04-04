@@ -198,7 +198,6 @@ namespace Player
 
         private void OnLand()
         {
-            Debug.Log("onland");
             _isGrounded = true;
             playerParticles.SpawnDustParticels();
         }
