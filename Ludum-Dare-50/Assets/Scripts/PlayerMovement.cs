@@ -133,11 +133,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (_isGrounded && (_doJump || HasBufferedJump))
         {
-            MyRigidbody2D.velocity = Vector2.up * JumpForce;
-            _isGrounded = false;
-
             var sp = DOTween.Sequence();
-            sp.Append(transform.DOScale(new Vector3(1, 0.5f, 1), 0.02f).From(Vector3.one));
+            sp.Append(transform.DOScale(new Vector3(1, 0.5f, 1), 0.02f).From(Vector3.one).OnComplete(
+                () =>
+                {
+                    MyRigidbody2D.velocity = Vector2.up * JumpForce;
+                    _isGrounded = false;
+                }));
             sp.Append(transform.DOScale(new Vector3(0.5f, 1, 1), 0.2f));
             sp.Append(transform.DOScale(new Vector3(1, 1, 1), 0.5f));
         }
