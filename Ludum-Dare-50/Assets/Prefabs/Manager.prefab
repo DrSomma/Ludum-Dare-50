@@ -415,6 +415,7 @@ MonoBehaviour:
   right: {fileID: 52285858}
   left: {fileID: 2127874092}
   duration: 1
+  durationOpen: 0.3
 --- !u!1 &1722340869
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,6 +679,20 @@ MonoBehaviour:
     AudioSource: {fileID: 0}
   - Name: Pickup
     AudioClip: {fileID: 8300000, guid: f6f20776975b05c468f0a57aa6abc802, type: 3}
+    Volume: 1
+    Pitch: 1
+    IsLoop: 0
+    HasCooldown: 0
+    AudioSource: {fileID: 0}
+  - Name: Alarm
+    AudioClip: {fileID: 8300000, guid: 9903f66e67e40d84880c7ca4692ab00c, type: 3}
+    Volume: 1
+    Pitch: 1
+    IsLoop: 0
+    HasCooldown: 0
+    AudioSource: {fileID: 0}
+  - Name: AlarmTicking
+    AudioClip: {fileID: 8300000, guid: 092c6b426b413fa45802ad9649957685, type: 3}
     Volume: 1
     Pitch: 1
     IsLoop: 0
