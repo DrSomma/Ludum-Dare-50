@@ -5,68 +5,75 @@ using Traps;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GameManager : MonoBehaviour
+namespace Manager
 {
-    public static GameManager Instance;
-
-    public GameState CurrentState { get; private set; }
-    public event Action<GameState> OnGameStateChange;
-
-    private void Awake()
+    public class GameManager : MonoBehaviour
     {
-        Instance = this;
-    }
+        public static GameManager Instance;
 
-    private void Start()
-    {
-        Collectable.OnCollect += OnCollect;
-    }
+        public GameState CurrentState { get; private set; }
+        public event Action<GameState> OnGameStateChange;
 
-    public void UpdateGameState(GameState newState)
-    {
-        if(CurrentState == newState)
+        private void Awake()
         {
-            return;
+            Instance = this;
         }
 
-        CurrentState = newState;
-        switch (CurrentState)
+        private void Start()
         {
-            case GameState.Playing:
-                break;
-            case GameState.OnEndpoint:
-                break;
-            case GameState.LevelComplete:
-                LevelManager.Instance.LoadNextLevel();
-                break;
-            case GameState.Dead:
-                break;
-            case GameState.Reload:
-                Reload();
-                break;
-            default: throw new ArgumentOutOfRangeException();
+            Collectable.OnCollect += OnCollect;
         }
 
-        OnGameStateChange?.Invoke(CurrentState);
+        public void UpdateGameState(GameState newState)
+        {
+            if(CurrentState == newState)
+            {
+                return;
+            }
+
+            CurrentState = newState;
+            switch (CurrentState)
+            {
+                case GameState.Playing:
+                    break;
+                case GameState.OnEndpoint:
+                    break;
+                case GameState.LevelComplete:
+                    LevelManager.Instance.LoadNextLevel();
+                    break;
+                case GameState.Dead:
+                    break;
+                case GameState.Reload:
+                    Reload();
+                    break;
+                case GameState.Loading:
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+
+            OnGameStateChange?.Invoke(CurrentState);
+        }
+
+        private void OnCollect()
+        {
+            Debug.Log("you got one");
+        }
+
+        private void Reload()
+        {
+            Debug.Log("Reload");
+            LevelManager.Instance.ReloadCurrentScene();
+        }
+        
     }
 
-    private void OnCollect()
+    public enum GameState
     {
-        Debug.Log("you got one");
+        Playing,
+        LevelComplete,
+        Dead,
+        Reload,
+        Loading,
+        OnEndpoint
     }
-
-    private void Reload()
-    {
-        Debug.Log("Reload");
-        LevelManager.Instance.ReloadCurrentScene();
-    }
-}
-
-public enum GameState
-{
-    Playing,
-    LevelComplete,
-    Dead,
-    Reload,
-    OnEndpoint
 }

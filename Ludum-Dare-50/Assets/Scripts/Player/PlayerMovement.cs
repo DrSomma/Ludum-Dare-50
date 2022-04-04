@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using Manager;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -197,7 +198,6 @@ namespace Player
 
         private void OnLand()
         {
-            Debug.Log("onland");
             _isGrounded = true;
             playerParticles.SpawnDustParticels();
         }
