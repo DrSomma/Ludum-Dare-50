@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
+using Player;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -29,6 +30,8 @@ public class Endpoint : MonoBehaviour
 
     private bool _isPlayerNear;
 
+    private bool _wasTriggert;
+
 
     private void Start()
     {
@@ -53,7 +56,10 @@ public class Endpoint : MonoBehaviour
         {
             return;
         }
-
+        if(_wasTriggert)
+            return;
+        _wasTriggert = true;
+        
         Debug.Log("Exit!");
 
         GameManager.Instance.UpdateGameState(GameState.OnEndpoint);

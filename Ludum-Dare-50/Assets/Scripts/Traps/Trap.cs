@@ -5,8 +5,7 @@ namespace Traps
 {
     public class Trap : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject playerDeathParticleSystem;
+        private bool _wasTriggert;
         
         protected void OnCollisionEnter2D(Collision2D col)
         {
@@ -14,20 +13,23 @@ namespace Traps
             {
                 return;
             }
+            if(_wasTriggert)
+                return;
+            _wasTriggert = true;
 
-            KillPlayer();
+            PlayerLifeController player = col.gameObject.GetComponent<PlayerLifeController>();
+            
+            HitPlayer(player);
             ThisTrapOnHit(col.GetContact(0).point);
         }
 
-        private void KillPlayer()
+        private void HitPlayer(PlayerLifeController playerLifeController)
         {
-            GameManager.Instance.UpdateGameState(GameState.Dead);
+            playerLifeController.HurtPlayer();
         }
 
         protected virtual void ThisTrapOnHit(Vector2 pos)
         {
-            var ps = Instantiate(playerDeathParticleSystem);
-            ps.transform.position = pos;
 
         }
     }

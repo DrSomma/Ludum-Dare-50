@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a056bdd909a2141a1cac5730c90b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDeathParticleSystem: {fileID: 0}
 --- !u!61 &1086613271
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -818,5 +817,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.0000039935107
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7605952974897537375, guid: b7ff2cdf3a6d84849ab628e90bab72b3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b7ff2cdf3a6d84849ab628e90bab72b3, type: 3}
