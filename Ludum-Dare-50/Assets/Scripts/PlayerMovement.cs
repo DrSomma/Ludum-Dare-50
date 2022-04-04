@@ -135,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
         {
             MyRigidbody2D.velocity = Vector2.up * JumpForce;
             _isGrounded = false;
+            transform.DOScale(new Vector3(1, 0.5f, 1), 0.1f).From(Vector3.one).SetEase(Ease.InOutBounce).SetLoops(2, LoopType.Yoyo);
         }
     }
 
@@ -142,13 +143,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (jumpButtonPressed)
         {
-            bool isJumpingInThisFrame = !_doJump;
             _lastJumpPressed = Time.time;
             _doJump = true;
-            if (isJumpingInThisFrame)
-            {
-                transform.DOScale(new Vector3(1, 0.5f, 1), 0.1f).SetEase(Ease.InOutBounce).SetLoops(2, LoopType.Yoyo);
-            }
         }
         else
         {
