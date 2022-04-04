@@ -4,6 +4,7 @@ using System.Linq;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
@@ -72,6 +73,7 @@ public class SoundManager : MonoBehaviour
         if (sound != null && CanPlaySound(sound))
         {
             sound.AudioSource.volume = sound.Volume;
+            sound.AudioSource.pitch = sound.Pitch;
             sound.AudioSource.Play();
         }
     }
@@ -82,7 +84,7 @@ public class SoundManager : MonoBehaviour
 
         if (sound != null && CanPlaySound(sound))
         {
-            if (fade)
+            if (!fade)
             {
                 PlaySound(soundEnum);
                 return;
