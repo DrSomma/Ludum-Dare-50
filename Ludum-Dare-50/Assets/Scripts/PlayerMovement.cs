@@ -135,7 +135,11 @@ public class PlayerMovement : MonoBehaviour
         {
             MyRigidbody2D.velocity = Vector2.up * JumpForce;
             _isGrounded = false;
-            transform.DOScale(new Vector3(1, 0.5f, 1), 0.1f).From(Vector3.one).SetEase(Ease.InOutBounce).SetLoops(2, LoopType.Yoyo);
+
+            var sp = DOTween.Sequence();
+            sp.Append(transform.DOScale(new Vector3(1, 0.5f, 1), 0.02f).From(Vector3.one));
+            sp.Append(transform.DOScale(new Vector3(0.5f, 1, 1), 0.2f));
+            sp.Append(transform.DOScale(new Vector3(1, 1, 1), 0.5f));
         }
     }
 
