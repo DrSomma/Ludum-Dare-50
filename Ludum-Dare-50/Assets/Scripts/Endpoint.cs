@@ -97,7 +97,7 @@ public class Endpoint : MonoBehaviour
     private void AnimationIsDone()
     {
         SoundManager.Instance.StopSound(soundEnum: SoundManager.Sounds.Alarm, fade: true);
-        _playerMovementAnimator.SetBool(name: "IsRinging", value: true);
+        _playerMovementAnimator.SetBool(name: "IsRinging", value: false);
         GameManager.Instance.UpdateGameState(GameState.LevelComplete);
     }
 
@@ -123,6 +123,7 @@ public class Endpoint : MonoBehaviour
         //play music
         SoundManager.Instance.StopSound(SoundManager.Sounds.AlarmTicking);
         SoundManager.Instance.PlaySound(SoundManager.Sounds.Alarm);
+        _playerMovementAnimator.SetBool(name: "IsRinging", value: true);
 
         Sequence sp = DOTween.Sequence();
         sp.SetDelay(0.5f);
