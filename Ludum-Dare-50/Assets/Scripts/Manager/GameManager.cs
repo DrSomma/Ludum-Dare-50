@@ -65,6 +65,15 @@ namespace Manager
             LevelManager.Instance.ReloadCurrentScene();
         }
         
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                if(CurrentState == GameState.Playing)
+                    Reload();
+            }
+        }
+        
     }
 
     public enum GameState
