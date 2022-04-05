@@ -1,5 +1,4 @@
 using System;
-using GD.MinMaxSlider;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,7 +19,6 @@ public class Sound
     public float Pitch => HasPitchVariante ? pitch + Random.Range(PitchVariante.x,PitchVariante.y) : pitch;
     public bool HasPitchVariante;
     
-    [MinMaxSlider(-3,3)] 
     public Vector2 PitchVariante;
 
     public bool IsLoop;
