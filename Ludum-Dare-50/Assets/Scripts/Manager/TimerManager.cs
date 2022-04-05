@@ -24,7 +24,7 @@ namespace Manager
         [SerializeField]
         private Color colorNoBestTime;
 
-        private List<int> blackListLevel = new List<int>() {0, 1};
+        private List<int> blackListLevel = new List<int>() {0, 1, 7};
 
         public IReadOnlyDictionary<int, float> BestTime => bestTime;
         private Dictionary<int, float> bestTime;
