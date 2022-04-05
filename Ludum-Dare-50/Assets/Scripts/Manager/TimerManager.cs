@@ -24,7 +24,6 @@ namespace Manager
         [SerializeField]
         private Color colorNoBestTime;
 
-        [SerializeField]
         private List<int> blackListLevel = new List<int>() {0, 1};
 
         public IReadOnlyDictionary<int, float> BestTime => bestTime;
@@ -32,6 +31,7 @@ namespace Manager
 
         private TimeSpan _timeSpan;
         private bool _count;
+        private bool IsOnBlackList => blackListLevel.Contains(LevelManager.Instance.CurLevel);
         
 
         private void Awake()
@@ -50,8 +50,7 @@ namespace Manager
 
         private void ResetUi()
         {
-            bool isOnBlackList = blackListLevel.Contains(LevelManager.Instance.CurLevel);
-            txtTimer.transform.gameObject.SetActive(!isOnBlackList);
+            txtTimer.transform.gameObject.SetActive(!IsOnBlackList);
             txtTimer.text = "00.00";
             _count = true;
             txtNewBestTime.alpha = 0; //hide best time
@@ -59,13 +58,13 @@ namespace Manager
 
         private void OnGameStateChange(GameState obj)
         {
-            if (obj == GameState.OnEndpoint)
+            if (obj == GameState.OnEndpoint && !IsOnBlackList)
             {
                 float curTime = Time.timeSinceLevelLoad;
                 _count = false;
                 CheckForNewBestTime(curTime);
             }
-            if (obj == GameState.LevelComplete)
+            if (obj == GameState.LevelComplete && !IsOnBlackList)
             {
                 txtNewBestTime.DOFade(0, 0.2f);
             }
@@ -128,6 +127,11 @@ namespace Manager
             txtTimer.text = _timeSpan.ToString(TIME_FORMAT);
         }
 
-         
+
+        public static string ParseTimeToString(float time)
+        {
+            TimeSpan ts  = TimeSpan.FromSeconds(time);
+            return ts.ToString(TIME_FORMAT);;
+        }
     }
 }

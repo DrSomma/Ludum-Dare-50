@@ -7,6 +7,11 @@ public class MenuBehaviour : MonoBehaviour
     {
         LevelManager.Instance.LoadNextLevel();
     }   
+    
+    public void OnHomeClicked()
+    {
+        LevelManager.Instance.LoadMainMenu();
+    } 
 
     public void ClickStatisticButton()
     {
