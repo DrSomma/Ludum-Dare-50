@@ -86,5 +86,10 @@ namespace Manager
         {
             LoadLevel(0);
         }
+
+        public void LoadFirstLevel()
+        {
+            LoadLevel(1);
+        }
     }
 }

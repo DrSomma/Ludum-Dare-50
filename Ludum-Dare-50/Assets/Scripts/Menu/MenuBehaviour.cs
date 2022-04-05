@@ -5,7 +5,7 @@ public class MenuBehaviour : MonoBehaviour
 {
     public void ClickStartButton()
     {
-        LevelManager.Instance.LoadNextLevel();
+        LevelManager.Instance.LoadFirstLevel();
     }   
     
     public void OnHomeClicked()
