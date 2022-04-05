@@ -62,7 +62,6 @@ namespace Traps
         {
             if (startDelay > 0)
             {
-                Debug.Log("Wait for start " + startDelay);
                 yield return new WaitForSeconds(startDelay);
             }
             while (_doMove)
