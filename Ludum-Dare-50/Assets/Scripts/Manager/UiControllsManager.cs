@@ -12,12 +12,19 @@ namespace Manager
         public Sprite UnmuteAudioSprite;
 
         private Image _audioButtonImage;
+
+        private GameObject _homeButtonGameObject;
         private bool _isSoundMuted;
+        private GameObject _skipButtonGameObject;
 
         private void Start()
         {
             GameManager.Instance.OnGameStateChange += OnStart;
             _audioButtonImage = controlls.transform.Find("audio")?.gameObject.GetComponent<Image>();
+            _homeButtonGameObject = controlls.transform.Find("home")?.gameObject;
+            _skipButtonGameObject = controlls.transform.Find("next")?.gameObject;
+            _homeButtonGameObject.SetActive(false);
+            _skipButtonGameObject.SetActive(false);
             if (_audioButtonImage == null)
             {
                 Debug.LogError("Image of AudioButton was not found!");
@@ -28,6 +35,12 @@ namespace Manager
         {
             if (state == GameState.Playing)
             {
+                if (LevelManager.Instance.CurLevel != 0)
+                {
+                    _homeButtonGameObject.SetActive(true);
+                    _skipButtonGameObject.SetActive(true);
+                }
+
                 Debug.Log("playinggg setaktic");
                 controlls.interactable = true;
             }
@@ -39,6 +52,8 @@ namespace Manager
 
         public void OnHomeClicked()
         {
+            _homeButtonGameObject.SetActive(false);
+            _skipButtonGameObject.SetActive(false);
             controlls.interactable = false;
             LevelManager.Instance.LoadMainMenu();
         }
