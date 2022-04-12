@@ -17,8 +17,13 @@ namespace Player
 
         [SerializeField]
         private float JumpBuffer = 0.1f;
+        
+        [SerializeField]
+        private float CoyoteTime = 3f;
 
-        [FormerlySerializedAs("MAXFallSpeed")]
+        [SerializeField]
+        private int MaxJumpCount = 1;
+        
         [SerializeField]
         private float MaxFallSpeed = -25f;
 
@@ -43,14 +48,16 @@ namespace Player
         private readonly Collider2D[] _overlapResults = new Collider2D[2]; //can only detect 2 collisions
 
         public bool OnGround => _isGrounded;
-    
-        private bool _doJump;
-
+        
         private bool _isGrounded;
 
         private float _lastJumpPressed;
-
+        
+        private float _lastTimeOnGround;
+        
         private float _moveInput;
+
+        private int _jumpCount;
 
         private Animator _playerMovementAnimator;
 
@@ -59,13 +66,13 @@ namespace Player
         private SpriteRenderer[] _allSpriteRenderers;
     
         private bool HasBufferedJump => _lastJumpPressed + JumpBuffer > Time.time;
+        private bool IsInAir => !_isGrounded;
 
         private Action<GameState> _myOnGameStateChangeEvent;
         private bool _isFacingRight;
 
         private void Awake()
         {
-            _doJump = false;
             _lastJumpPressed = float.MinValue;
             _playerMovementAnimator = GetComponentInChildren<Animator>();
             _allSpriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -73,6 +80,7 @@ namespace Player
 
         private void Start()
         {
+            _jumpCount = MaxJumpCount;
             _canMove = GameManager.Instance.CurrentState == GameState.Playing;
             _isGrounded = IsGrounded();
             _myOnGameStateChangeEvent = OnGameStateChange;
@@ -143,12 +151,15 @@ namespace Player
 
         private void DoJump()
         {
+            _jumpCount--;
+            
             //animation
             Sequence sp = DOTween.Sequence();
             sp.Append(transform.DOScale(new Vector3(1, 0.5f, 1), 0.02f).From(Vector3.one).OnComplete(
                 () =>
                 {
                     MyRigidbody2D.velocity = Vector2.up * JumpForce;
+                    _lastTimeOnGround = Time.time;
                 }));
             sp.Append(transform.DOScale(new Vector3(0.5f, 1, 1), 0.2f));
             sp.Append(transform.DOScale(new Vector3(1, 1, 1), 0.5f));
@@ -160,31 +171,40 @@ namespace Player
             SoundManager.Instance.PlaySound(SoundManager.Sounds.Jump);
         }
 
-        private bool CheckForJumpInput(bool jumpButtonPressed)
+        private bool CheckForJumpInput(bool inputButtonPressed)
         {
-            if (jumpButtonPressed)
+            if (inputButtonPressed)
             {
-                if(!_isGrounded)
-                    _lastJumpPressed = Time.time;
-                _doJump = true;
-            }
-            else
-            {
-                _doJump = false;
+                _lastJumpPressed = Time.time;
             }
             
-            return _isGrounded && (_doJump || HasBufferedJump);
+            bool isJumpPressed = (inputButtonPressed || HasBufferedJump);
+          
+            bool coyote =  _lastTimeOnGround + CoyoteTime > Time.time;
+            bool hasJumpLeft = (_jumpCount > 0);
+            bool canJump = coyote || _isGrounded;
+            bool doJump = hasJumpLeft && isJumpPressed && canJump;
+            
+            if (doJump)
+            {
+                _lastJumpPressed = float.MinValue;
+            }
+            
+            return doJump;
         }
 
         private void FixedUpdate()
         {
             if (IsGrounded())
             {
-                if(!_isGrounded)
+                //not landet in this frame => call OnLande once
+                if(IsInAir) 
                     OnLand();
             }
             else
             {
+                //in this frame still on ground
+                if (_isGrounded) _lastTimeOnGround = Time.time; 
                 _isGrounded = false;
             }
         
@@ -199,6 +219,7 @@ namespace Player
         private void OnLand()
         {
             _isGrounded = true;
+            _jumpCount = MaxJumpCount;
             playerParticles.SpawnDustParticels();
         }
 
