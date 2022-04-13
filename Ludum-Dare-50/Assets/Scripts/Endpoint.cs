@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Cinemachine;
 using DG.Tweening;
 using Manager;
 using Player;
@@ -30,6 +31,7 @@ public class Endpoint : MonoBehaviour
     private Animator _playerMovementAnimator;
 
     private bool _wasTriggert;
+    
 
 
     private void Start()
@@ -133,6 +135,16 @@ public class Endpoint : MonoBehaviour
         sp.Append(GetAnimationSequenceOnFistUp(fistTransform: fistTransform, startPos: startPos, snoozeAnimation: snoozeAnimation));
         sp.OnComplete(onComplete);
     }
+    
+    private IEnumerator CamShake()
+    {
+        CinemachineVirtualCamera cam = Camera.main.transform.parent.GetComponentInChildren<CinemachineVirtualCamera>();
+        CinemachineBasicMultiChannelPerlin nois = cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        nois.m_AmplitudeGain = 5;
+        yield return new WaitForSeconds(0.5f);
+        nois.m_AmplitudeGain = 0;
+        yield return null;
+    }
 
     private Tween GetAnimationSequenceOnFistUp(Transform fistTransform, Vector3 startPos, TextAnimator snoozeAnimation)
     {
@@ -148,7 +160,11 @@ public class Endpoint : MonoBehaviour
         sp.Append(playerTransform.DOShakeScale(shakeSpeed));
         sp.Join(snoozeAnimation.GetAnimation(false));
         sp.Join(SoundManager.Instance.StopSoundFadeOutAndPitch(SoundManager.Sounds.Alarm));
-        sp.OnPlay(() => { playerTransform.GetComponent<PlayerLifeController>().HitPlayer(); });
+        sp.OnPlay(() => {
+            //On Hit!
+            playerTransform.GetComponent<PlayerLifeController>().HitPlayer();
+            StartCoroutine(CamShake());
+        });
         return sp;
     }
 
