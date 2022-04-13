@@ -16,10 +16,16 @@ namespace Player
         private float JumpForce = 12f;
 
         [SerializeField]
+        private float JumpVelocityFalloff = 8;
+        
+        [SerializeField]
+        private float FallMultiplier = 7;
+        
+        [SerializeField]
         private float JumpBuffer = 0.1f;
         
         [SerializeField]
-        private float CoyoteTime = 3f;
+        private float CoyoteTime = 0.4f;
 
         [SerializeField]
         private int MaxJumpCount = 1;
@@ -70,6 +76,7 @@ namespace Player
 
         private Action<GameState> _myOnGameStateChangeEvent;
         private bool _isFacingRight;
+      
 
         private void Awake()
         {
@@ -143,6 +150,9 @@ namespace Player
             SetFacingDirectionAnimation(horizontalAxis);
             SetIsRunningAnimation(horizontalAxis);
 
+            if ((IsInAir && MyRigidbody2D.velocity.y < JumpVelocityFalloff) || MyRigidbody2D.velocity.y > 0 && !Input.GetButton("Jump"))
+                MyRigidbody2D.velocity += Vector2.up * Physics.gravity.y * FallMultiplier * Time.deltaTime;
+            
             if (CheckForJumpInput(Input.GetButtonDown("Jump")))
             {
                 DoJump();
